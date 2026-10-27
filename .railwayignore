@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+node_modules
+preview
+posts.json
+latest.html
+*.log
+.git
+.railway

@@ -1,0 +1,39 @@
+{
+  "name": "the-vacancy-desk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A source-linked, deduplicated register of EU institution and agency vacancies.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "sync": "node scripts/sync.js",
+    "db:init": "node scripts/init-db.js",
+    "screenshots": "node scripts/screenshots.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "eu-jobs",
+    "vacancies",
+    "railway",
+    "postgres"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "compression": "^1.8.2",
+    "dotenv": "^18.0.9",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "node-cron": "^4.6.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.1"
+  }
+}

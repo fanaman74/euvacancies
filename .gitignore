@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.*
+!.env.example
+posts.json
+latest.html
+*.log
+.railway/
+.DS_Store
+preview/

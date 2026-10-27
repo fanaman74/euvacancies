@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= pageTitle %></title>
+  <meta name="theme-color" content="#ece6d8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body class="status-page">
+  <main class="status-card">
+    <p class="section-index"><span>!</span> Wire interrupted</p>
+    <h1>Dropped<br><em>signal.</em></h1>
+    <p><%= message %></p>
+    <a class="button button--ink" href="/">Try the register again <span aria-hidden="true">↗</span></a>
+  </main>
+</body>
+</html>

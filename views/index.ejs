@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= pageTitle %></title>
+  <meta name="description" content="<%= pageDescription %>">
+  <meta name="theme-color" content="#ece6d8">
+  <meta property="og:title" content="<%= pageTitle %>">
+  <meta property="og:description" content="<%= pageDescription %>">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="EU Employment / The Vacancy Register">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+  <a class="skip-link" href="#ledger">Skip to the vacancy register</a>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="page-edge page-edge--left" aria-hidden="true"></div>
+  <div class="page-edge page-edge--right" aria-hidden="true"></div>
+
+  <div class="ticker" role="status" aria-label="Register summary">
+    <div class="ticker__track">
+      <span><b><%= stats.total %></b> vacancies on record</span>
+      <i aria-hidden="true">✳</i>
+      <span><b><%= stats.open %></b> open now</span>
+      <i aria-hidden="true">✳</i>
+      <span><b><%= stats.editions %></b> editions merged</span>
+      <i aria-hidden="true">✳</i>
+      <span>Source: euemployment.eu</span>
+      <i aria-hidden="true">✳</i>
+      <span>Checked <b><%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'on first boot' %></b></span>
+      <i aria-hidden="true">✳</i>
+      <span>Independent reading aid — not legal or recruitment advice</span>
+      <i aria-hidden="true">✳</i>
+    </div>
+  </div>
+
+  <header class="masthead">
+    <div class="masthead__inner">
+      <a class="brand" href="#top" aria-label="EU Employment — back to top">
+        <span class="brand__word">EU<span>/</span>EMPLOYMENT</span>
+        <span class="brand__sub">The vacancy register</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Sections">
+        <a href="#overview"><span>01</span> Overview</a>
+        <a href="#categories"><span>02</span> Categories</a>
+        <a href="#ledger"><span>03</span> Register</a>
+        <a href="#latest"><span>04</span> Latest</a>
+        <a href="#method"><span>05</span> Method</a>
+      </nav>
+
+      <div class="masthead__tools">
+        <span class="feed-status"><i class="live-dot" aria-hidden="true"></i>Checked <b><%= lastCheckDay %> <%= lastCheckMonth %></b></span>
+        <button class="search-jump" type="button" data-focus-search>
+          Find a role
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.2 15.2 4.6 4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero__map" aria-hidden="true">
+        <div class="hero__map-dots"></div>
+        <span class="hero__map-mark hero__map-mark--one">+</span>
+        <span class="hero__map-mark hero__map-mark--two">+</span>
+        <span class="hero__map-label">EU / AGENCIES / DUTY STATIONS</span>
+      </div>
+
+      <div class="hero__meta">
+        <span class="file-tag"><b>File № <%= String(stats.total).padStart(3, '0') %></b></span>
+        <span>EU institutions / agencies</span>
+        <span>Public record / <%= today.slice(0, 4) %></span>
+        <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">Source: euemployment.eu <span aria-hidden="true">↗</span></a>
+      </div>
+
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__line">EU vacancies.</span>
+        <span class="hero__line hero__line--mark">Straight to the source.</span>
+      </h1>
+
+      <div class="hero__grid">
+        <div class="hero__copy">
+          <p class="hero__intro">
+            Direct vacancies from EU institutions and agencies. Pulled from the weekly
+            <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">euemployment.eu</a>
+            roundups, deduplicated, deadline-checked, and linked <strong>straight to the agency.</strong>
+          </p>
+
+          <div class="hero__actions">
+            <a class="button button--ink" href="#ledger">
+              Open the register
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="text-link" href="#method">
+              How the sweep works
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v11M5 11l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+
+          <div class="hero__micro">
+            <span><b><%= stats.total %></b> on record</span>
+            <span><b><%= stats.open %></b> open now</span>
+            <span><b><%= stats.editions %></b> editions</span>
+            <span><b>09:00</b> next check</span>
+          </div>
+
+          <p class="hero__annotation" aria-hidden="true">read the record,<br>not the ring binder ↘</p>
+        </div>
+
+        <div class="hero__file-wrap">
+          <aside class="file-card" aria-label="Latest register edition">
+            <span class="tape tape--file" aria-hidden="true"></span>
+            <span class="file-card__clip" aria-hidden="true">
+              <svg viewBox="0 0 40 64" role="img"><path d="M12 15v31a8 8 0 0 0 16 0V11a6 6 0 0 0-12 0v33a4 4 0 0 0 8 0V18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </span>
+            <div class="file-card__top">
+              <span>Latest on file</span>
+              <span><%= latestEdition ? formatEditionDate(latestEdition.source_published_at) : 'Awaiting first sweep' %></span>
+            </div>
+
+            <% if (latestEdition) { %>
+              <% const latestTotal = Math.max(latestEdition.jobs, 1); %>
+              <div class="file-card__count">
+                <span><%= latestEdition.jobs %></span>
+                <small>roles in the<br>newest roundup</small>
+              </div>
+              <h2 class="file-card__title">The latest<br>from the wire.</h2>
+
+              <div class="file-card__bars" aria-label="Latest edition by category">
+                <div class="file-bar">
+                  <span>Contract</span>
+                  <b><%= latestCategoryCounts.contract %></b>
+                  <i style="--bar: <%= Math.max(7, Math.round((latestCategoryCounts.contract / latestTotal) * 100)) %>%"></i>
+                </div>
+                <div class="file-bar">
+                  <span>Assistants</span>
+                  <b><%= latestCategoryCounts.assistant %></b>
+                  <i style="--bar: <%= Math.max(7, Math.round((latestCategoryCounts.assistant / latestTotal) * 100)) %>%"></i>
+                </div>
+                <div class="file-bar">
+                  <span>Administrators</span>
+                  <b><%= latestCategoryCounts.administrator %></b>
+                  <i style="--bar: <%= Math.max(7, Math.round((latestCategoryCounts.administrator / latestTotal) * 100)) %>%"></i>
+                </div>
+              </div>
+
+              <div class="file-card__rule" aria-hidden="true"></div>
+              <p class="file-card__note">Curated from the latest weekly roundup. Financials and deadlines are copied from the source notice — always confirm at the agency.</p>
+              <a class="file-card__link" href="<%= latestEdition.source_post_url %>" target="_blank" rel="noopener noreferrer">
+                Open the source edition
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            <% } else { %>
+              <div class="file-card__count"><span>00</span><small>roles in the<br>newest roundup</small></div>
+              <h2 class="file-card__title">The first<br>sweep is due.</h2>
+              <p class="file-card__note">The register is waiting for its first automated check of the source.</p>
+              <a class="file-card__link" href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">Visit the source <span aria-hidden="true">↗</span></a>
+            <% } %>
+
+          </aside>
+
+          <p class="hero__file-note">Every record points back to the agency. <span>No dead ends.</span></p>
+        </div>
+      </div>
+
+      <div class="hero__foot">
+        <a class="scroll-cue" href="#overview">Scroll the register <span aria-hidden="true">↓</span></a>
+        <span class="hero__foot-rule" aria-hidden="true"></span>
+        <span>01—05</span>
+      </div>
+    </section>
+
+    <section class="overview wrap" id="overview" aria-labelledby="overview-title">
+      <div class="overview__head">
+        <div>
+          <p class="section-index"><span>01</span> The record</p>
+          <h2 class="section-title" id="overview-title">Register <span class="marker">overview.</span></h2>
+        </div>
+        <p class="overview__intro">
+          A bounded register of direct-entry EU vacancies. Newest first. Source first.
+          Every deadline is checked against today in London, and every role keeps its
+          original agency link.
+        </p>
+      </div>
+
+      <div class="ledger-panel">
+        <span class="tape tape--ledger-one" aria-hidden="true"></span>
+        <span class="tape tape--ledger-two" aria-hidden="true"></span>
+        <dl class="ledger-grid">
+          <div class="ledger-item">
+            <dt>Vacancies on record</dt>
+            <dd class="ledger-number"><%= stats.total %><sup>unique</sup></dd>
+            <p>One row per role, across every edition indexed.</p>
+          </div>
+          <div class="ledger-item">
+            <dt>Open right now</dt>
+            <dd class="ledger-number"><%= stats.open %><sup>live</sup></dd>
+            <p><%= stats.closing %> closing within the next seven days.</p>
+          </div>
+          <div class="ledger-item">
+            <dt>Editions merged</dt>
+            <dd class="ledger-number"><%= stats.editions %><sup>weekly</sup></dd>
+            <p>Repeated roles update one record instead of multiplying.</p>
+          </div>
+          <div class="ledger-item ledger-item--date">
+            <dt>Register last checked</dt>
+            <% const [lastMonth, lastYear] = lastCheckMonth.split(' '); %>
+            <dd class="ledger-date"><span><%= lastCheckDay %></span><span><%= lastMonth %><br><%= lastYear %></span></dd>
+            <p class="ledger-live"><i class="live-dot" aria-hidden="true"></i><%= lastSuccess ? 'Source current at last sweep.' : 'Waiting for the first sweep.' %></p>
+          </div>
+        </dl>
+        <p class="ledger-foot"><span>No invented listings.</span> Every row links to the agency vacancy page and the source edition it came from.</p>
+      </div>
+    </section>
+
+    <section class="ways wrap" id="categories" aria-labelledby="ways-title">
+      <div class="ways__head">
+        <div>
+          <p class="section-index"><span>02</span> Open a file</p>
+          <h2 class="section-title" id="ways-title">Four ways to<br>scan the <span class="marker">register.</span></h2>
+        </div>
+        <div class="ways__aside">
+          <p>Contract agents, assistants, administrators, or the whole board. Four doors into the same source-linked record.</p>
+          <span class="ways__stamp" aria-hidden="true">Choose a file <b>→</b></span>
+        </div>
+      </div>
+
+      <div class="way-grid">
+        <button class="way-card category-door is-active" type="button" data-category-filter="all" aria-pressed="true" style="--r: -1.2deg">
+          <span class="way-card__tab">Register / 01</span>
+          <span class="way-card__top">
+            <span class="way-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </span>
+            <span class="way-card__num">01</span>
+          </span>
+          <span class="way-card__name">All records</span>
+          <span class="way-card__copy">The complete vacancy register, open and closed, ordered by deadline.</span>
+          <span class="way-card__cta"><span><%= categoryOpenCounts.all %> open · <%= categoryCounts.all %> on record</span><span>Scan all <span aria-hidden="true">→</span></span></span>
+          <span class="way-card__ghost" aria-hidden="true">ALL</span>
+        </button>
+
+        <button class="way-card category-door" type="button" data-category-filter="contract" aria-pressed="false" style="--r: 0.9deg">
+          <span class="way-card__tab">Register / 02</span>
+          <span class="way-card__top">
+            <span class="way-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V21H6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3.5V8h4M9 12h6M9 15.5h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <span class="way-card__num">02</span>
+          </span>
+          <span class="way-card__name">Contract agents</span>
+          <span class="way-card__copy">FG II–IV contracts in agencies and joint undertakings across the EU.</span>
+          <span class="way-card__cta"><span><%= categoryOpenCounts.contract %> open · <%= categoryCounts.contract %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
+          <span class="way-card__ghost" aria-hidden="true">CA</span>
+        </button>
+
+        <button class="way-card category-door" type="button" data-category-filter="assistant" aria-pressed="false" style="--r: 0.7deg">
+          <span class="way-card__tab">Register / 03</span>
+          <span class="way-card__top">
+            <span class="way-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4.5 20v-2.2c0-2.4 2.4-4.3 5.4-4.3h4.2c3 0 5.4 1.9 5.4 4.3V20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7.5" r="3.8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </span>
+            <span class="way-card__num">03</span>
+          </span>
+          <span class="way-card__name">Assistants</span>
+          <span class="way-card__copy">AST and AST/SC support roles, from secretariats to operations.</span>
+          <span class="way-card__cta"><span><%= categoryOpenCounts.assistant %> open · <%= categoryCounts.assistant %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
+          <span class="way-card__ghost" aria-hidden="true">AST</span>
+        </button>
+
+        <button class="way-card category-door" type="button" data-category-filter="administrator" aria-pressed="false" style="--r: -0.8deg">
+          <span class="way-card__tab">Register / 04</span>
+          <span class="way-card__top">
+            <span class="way-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3 20 6v5.5c0 4.8-3.2 8.1-8 9.5-4.8-1.4-8-4.7-8-9.5V6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.5 12 2.4 2.4 4.8-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="way-card__num">04</span>
+          </span>
+          <span class="way-card__name">Administrators</span>
+          <span class="way-card__copy">AD and temporary-agent posts, including senior and specialist profiles.</span>
+          <span class="way-card__cta"><span><%= categoryOpenCounts.administrator %> open · <%= categoryCounts.administrator %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
+          <span class="way-card__ghost" aria-hidden="true">AD</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="register wrap" id="ledger" aria-labelledby="ledger-title">
+      <div class="register__head">
+        <div>
+          <p class="section-index"><span>03</span> The ledger</p>
+          <h2 class="section-title" id="ledger-title">Every vacancy,<br><span class="marker">one record.</span></h2>
+        </div>
+        <div class="register__aside">
+          <p>Search the full register, narrow it by category, station or closing window. Closed files stay visible for reference.</p>
+          <div class="register__meta">
+            <span id="result-count" aria-live="polite">Showing <%= stats.open %> of <%= categoryCounts.all %></span>
+            <span class="live-tag"><i class="live-dot" aria-hidden="true"></i>Live register</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-shell">
+        <div class="filter-search">
+          <label class="search-field" for="job-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m15.2 15.2 4.6 4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <span class="sr-only">Search roles, agencies or places</span>
+            <input id="job-search" type="search" placeholder="Search a role, agency or duty station…" autocomplete="off">
+            <kbd>/</kbd>
+          </label>
+          <button class="clear-filters" type="button" id="clear-filters">Reset filters</button>
+        </div>
+
+        <div class="filter-row">
+          <div class="filter-tabs" role="group" aria-label="Filter by staff category">
+            <button class="filter-pill is-active" type="button" data-category-filter="all" aria-pressed="true">All <span><%= categoryCounts.all %></span></button>
+            <button class="filter-pill" type="button" data-category-filter="contract" aria-pressed="false">Contract <span><%= categoryCounts.contract %></span></button>
+            <button class="filter-pill" type="button" data-category-filter="assistant" aria-pressed="false">Assistants <span><%= categoryCounts.assistant %></span></button>
+            <button class="filter-pill" type="button" data-category-filter="administrator" aria-pressed="false">Administrators <span><%= categoryCounts.administrator %></span></button>
+          </div>
+
+          <div class="filter-selects">
+            <label class="select-wrap">
+              <span class="sr-only">Filter by location</span>
+              <select id="location-filter">
+                <option value="all">Everywhere</option>
+                <% locations.forEach((location) => { %>
+                  <option value="<%= location.code %>"><%= location.flag || '' %> <%= location.country %></option>
+                <% }); %>
+              </select>
+            </label>
+            <label class="select-wrap">
+              <span class="sr-only">Filter by status</span>
+              <select id="status-filter">
+                <option value="open" selected>Open now</option>
+                <option value="soon">Closing in 7 days</option>
+                <option value="all">All roles</option>
+                <option value="closed">Closed register</option>
+              </select>
+            </label>
+            <label class="select-wrap">
+              <span class="sr-only">Sort roles</span>
+              <select id="sort-filter">
+                <option value="deadline">Closing first</option>
+                <option value="newest">Newest edition</option>
+                <option value="title">Role A–Z</option>
+                <option value="salary">Salary, high to low</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-shell">
+        <table class="job-table" id="job-table">
+          <caption class="sr-only">Latest deduplicated EU institution and agency vacancies</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="col-index"><span class="sr-only">Number</span></th>
+              <th scope="col">Role / agency</th>
+              <th scope="col" class="col-where">Duty station</th>
+              <th scope="col" class="col-terms">Terms &amp; salary</th>
+              <th scope="col" class="col-deadline">Deadline</th>
+              <th scope="col" class="col-apply"><span class="sr-only">Application</span></th>
+            </tr>
+          </thead>
+          <tbody id="job-rows">
+            <% jobs.forEach((job, index) => { %>
+              <tr
+                class="job-row is-<%= job.status %>"
+                data-category="<%= job.categoryClass %>"
+                data-country="<%= job.country_code || '' %>"
+                data-status="<%= job.status %>"
+                data-search="<%= job.searchText %>"
+                data-deadline="<%= job.deadline_date || '9999-12-31' %>"
+                data-published="<%= job.source_published_at ? new Date(job.source_published_at).toISOString() : '' %>"
+                data-salary="<%= job.salary_max || job.salary_min || 0 %>"
+                data-title="<%= job.title.toLowerCase() %>"
+              >
+                <td class="cell-index" data-label="#">
+                  <span class="index-num"><%= String(index + 1).padStart(2, '0') %></span>
+                  <span class="cat-mark cat-<%= job.categoryClass %>" aria-hidden="true"></span>
+                </td>
+                <td class="cell-role" data-label="Role / agency">
+                  <div class="role-agency">
+                    <span class="agency-tag"><%= job.agency_short || 'EU' %></span>
+                    <span class="agency-name"><%= job.agency %></span>
+                  </div>
+                  <a class="job-title" href="<%= job.apply_url || job.source_post_url %>" target="_blank" rel="noopener noreferrer"><%= job.title %></a>
+                  <div class="tag-row">
+                    <span class="tag tag--cat cat-<%= job.categoryClass %>"><%= job.category %></span>
+                    <% if (job.grade) { %><span class="tag"><%= job.grade %></span><% } %>
+                    <% if (job.indefinite_contract === true) { %><span class="tag tag--perm">∞ Indefinite possible</span><% } %>
+                    <% if (job.times_seen > 1) { %><span class="tag tag--repeat" title="This role has appeared in <%= job.times_seen %> weekly editions">Seen <%= job.times_seen %>×</span><% } %>
+                  </div>
+                </td>
+                <td class="cell-where" data-label="Duty station">
+                  <span class="where-flag" aria-hidden="true"><%= job.flag || '🌍' %></span>
+                  <span class="where-text">
+                    <b><%= job.location_city || 'Europe' %></b>
+                    <small><%= job.location_country || 'Multiple locations' %></small>
+                  </span>
+                </td>
+                <td class="cell-terms" data-label="Terms &amp; salary">
+                  <b class="terms-type"><%= job.contract_type %></b>
+                  <span class="salary"><%= job.salaryShort %><% if (job.salary_min) { %> <small>net/mo</small><% } %></span>
+                </td>
+                <td class="cell-deadline" data-label="Deadline">
+                  <b class="deadline-date"><%= job.deadlineLabel %></b>
+                  <span class="status status--<%= job.status %>"><%= job.statusLabel %></span>
+                  <span class="deadline-relative"><%= job.deadlineRelative %></span>
+                </td>
+                <td class="cell-apply" data-label="Apply">
+                  <div class="apply-group">
+                    <a class="apply-btn" href="<%= job.apply_url || job.source_post_url %>" target="_blank" rel="noopener noreferrer">
+                      Apply <span aria-hidden="true">↗</span>
+                    </a>
+                    <a class="source-link" href="<%= job.source_post_url %>" target="_blank" rel="noopener noreferrer" title="Open the source edition" aria-label="Open the source edition for <%= job.title %>">
+                      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4h5M4 4v5M4 4l6 6M16 9v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <span class="empty-star" aria-hidden="true">✳</span>
+          <h3>No record matches that file.</h3>
+          <p>Try a broader search, another duty station, or open the full register including closed roles.</p>
+          <button class="button button--ink" type="button" id="empty-reset">Reset the filters</button>
+        </div>
+
+        <div class="table-foot">
+          <span id="visible-count">Showing <%= stats.open %> of <%= categoryCounts.all %> roles</span>
+          <span>Sources: <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">euemployment.eu</a> · Last sweep <%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'pending' %></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="latest" id="latest" aria-labelledby="latest-title">
+      <div class="latest__bgword" aria-hidden="true">OPEN FILES</div>
+      <div class="latest__inner wrap">
+        <div class="latest__head">
+          <div>
+            <p class="section-index section-index--light"><span>04</span> The docket</p>
+            <h2 class="section-title section-title--light" id="latest-title">Latest from<br>the <span class="marker marker--pink">register.</span></h2>
+          </div>
+          <div class="latest__aside">
+            <p>Three live roles from the most recent register pass. Open the record, check the source, then go straight to the agency.</p>
+            <div class="latest__meta">
+              <span><%= featuredJobs.length %> latest files</span>
+              <a href="#ledger">Browse all <%= stats.open %> open roles <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+          <div class="latest__counter" aria-hidden="true"><span>01</span><i>/</i><span><%= String(featuredJobs.length).padStart(2, '0') %></span></div>
+        </div>
+
+        <div class="latest__grid">
+          <% featuredJobs.forEach((job, index) => { %>
+            <article class="case-card <%= index === 0 ? 'case-card--pink' : '' %>" style="--r: <%= index === 0 ? '-1.5deg' : index === 1 ? '1.1deg' : '-0.7deg' %>">
+              <span class="tape tape--case" aria-hidden="true"></span>
+              <div class="case-card__top">
+                <span>Latest <%= String(index + 1).padStart(2, '0') %> / <%= job.category %></span>
+                <time datetime="<%= job.deadline_date || '' %>"><%= job.deadlineLabel %></time>
+              </div>
+              <span class="case-card__rule" aria-hidden="true"></span>
+              <h3><a href="<%= job.apply_url || job.source_post_url %>" target="_blank" rel="noopener noreferrer"><%= job.title %></a></h3>
+              <p class="case-card__agency"><%= job.agency %></p>
+              <span class="case-card__topic"><%= job.locationCity || job.location_city %> · <%= job.grade || job.contract_type %></span>
+              <div class="case-card__spacer"></div>
+              <div class="case-card__data">
+                <div><span>Salary</span><b><%= job.salaryShort %></b></div>
+                <div><span>Status</span><b><%= job.statusLabel %></b></div>
+              </div>
+              <div class="case-card__foot">
+                <a href="<%= job.apply_url || job.source_post_url %>" target="_blank" rel="noopener noreferrer">Apply at agency <span aria-hidden="true">↗</span></a>
+                <a href="<%= job.source_post_url %>" target="_blank" rel="noopener noreferrer">Source edition <span aria-hidden="true">↗</span></a>
+              </div>
+              <span class="case-card__ghost" aria-hidden="true"><%= String(index + 1).padStart(2, '0') %></span>
+            </article>
+          <% }); %>
+        </div>
+
+        <div class="latest__foot">
+          <span class="latest__hint">Newest files first <span aria-hidden="true">↘</span></span>
+          <span class="latest__line" aria-hidden="true"></span>
+          <a href="#ledger">Open the full register <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="fineprint wrap" id="method" aria-labelledby="fineprint-title">
+      <div class="fineprint__head">
+        <div>
+          <p class="section-index"><span>05</span> Method / limits</p>
+          <h2 class="section-title" id="fineprint-title">Read the <span class="marker">fine print.</span></h2>
+        </div>
+        <p class="fineprint__intro">
+          An informed reading starts here. The register is a reading aid; the linked
+          agency notice is always the authority.
+        </p>
+      </div>
+
+      <div class="fine-grid">
+        <article class="fine-card">
+          <span class="fine-card__letter">A</span>
+          <span class="fine-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3 20 6v5.5c0 4.8-3.2 8.1-8 9.5-4.8-1.4-8-4.7-8-9.5V6Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m8.5 12 2.4 2.4 4.8-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h3>The agency is the authority</h3>
+          <p>Every apply link goes to the institution or agency notice, not to a landing page or a repost.</p>
+          <span class="fine-card__tag">Source first</span>
+        </article>
+        <article class="fine-card">
+          <span class="fine-card__letter">B</span>
+          <span class="fine-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 7.5v4.8l3.1 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
+          <h3>One role, one record</h3>
+          <p>A fingerprint built from title, agency, duty station and grade collapses repeated weekly listings into one row.</p>
+          <span class="fine-card__tag">Deduplicated</span>
+        </article>
+        <article class="fine-card">
+          <span class="fine-card__letter">C</span>
+          <span class="fine-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </span>
+          <h3>Deadlines in London time</h3>
+          <p>The register is checked every morning at 09:00 Europe/London. The closing-soon count is compared with today, not with the source edition date.</p>
+          <span class="fine-card__tag">09:00 daily</span>
+        </article>
+      </div>
+
+      <div class="fineprint__warning">
+        <span class="fineprint__warning-mark" aria-hidden="true">!</span>
+        <p><strong>A reading aid, not a recruiter.</strong> Salary estimates and deadlines are copied from the source edition. Always verify the vacancy notice before applying. This site is independent and not affiliated with any EU institution.</p>
+        <span class="fineprint__warning-stamp" aria-hidden="true">CHECK<br>SOURCE</span>
+      </div>
+    </section>
+
+    <section class="cta" id="source" aria-labelledby="cta-title">
+      <div class="cta__grain" aria-hidden="true"></div>
+      <div class="cta__inner wrap">
+        <p class="section-index section-index--light"><span>06</span> The point</p>
+        <div class="cta__stage">
+          <h2 class="cta__title" id="cta-title">
+            <span>Don't chase</span>
+            <span>the roundup.</span>
+            <span class="cta__last">Open the <b>source.</b></span>
+          </h2>
+          <div class="cta__aside">
+            <p>Every record ends at the agency that owns the vacancy. No summaries passed off as the notice. No dead ends.</p>
+            <a class="button button--paper" href="#ledger">Back to the register <span aria-hidden="true">↑</span></a>
+            <a class="text-link text-link--light" href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">Visit euemployment.eu <span aria-hidden="true">↗</span></a>
+            <div class="cta__seal" aria-hidden="true">
+              <svg viewBox="0 0 140 140">
+                <defs><path id="ctaSealPath" d="M70,70 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0"/></defs>
+                <circle cx="70" cy="70" r="59" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                <circle cx="70" cy="70" r="46" fill="none" stroke="currentColor" stroke-width=".8"/>
+                <text><textPath href="#ctaSealPath" startOffset="0">TRACE THE SOURCE · EU EMPLOYMENT REGISTER · TRACE THE SOURCE · </textPath></text>
+                <path d="M70 51 75.7 64.8 91 66 79.4 75.8 82.9 90.6 70 82.4 57.1 90.6 60.6 75.8 49 66 64.3 64.8Z" fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="cta__foot">
+          <span>Independent reading aid</span>
+          <span>Last check: <%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'pending' %></span>
+          <span>Next sweep: <%= schedule.nextRun ? formatSyncTime(schedule.nextRun) : 'daily at 09:00' %></span>
+          <span>Europe/London</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="colophon" id="colophon">
+    <div class="colophon__inner wrap">
+      <div class="colophon__top">
+        <div class="colophon__brand">
+          <a class="brand brand--footer" href="#top">EU<span>/</span>EMPLOYMENT</a>
+          <p>The vacancy register.<br>Source first. Updated daily at 09:00.</p>
+        </div>
+        <div class="colophon__col">
+          <h2>Register</h2>
+          <a href="#overview">Overview</a>
+          <a href="#categories">Categories</a>
+          <a href="#ledger">All vacancies</a>
+          <a href="#latest">Latest files</a>
+        </div>
+        <div class="colophon__col">
+          <h2>Method</h2>
+          <a href="#method">How the sweep works</a>
+          <a href="#method">Duplicate checks</a>
+          <a href="#method">Deadlines</a>
+          <a href="/api/jobs">JSON register</a>
+        </div>
+        <div class="colophon__col">
+          <h2>Source</h2>
+          <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">euemployment.eu ↗</a>
+          <a href="https://euemployment.eu/" target="_blank" rel="noopener noreferrer">Jobs in EU Institutions ↗</a>
+          <span class="colophon__status"><i class="live-dot" aria-hidden="true"></i><%= lastSuccess ? 'Register current at last sweep' : 'Awaiting first sweep' %></span>
+        </div>
+      </div>
+
+      <div class="colophon__word" aria-hidden="true"><span>EU</span> EMPLOYMENT</div>
+
+      <div class="colophon__bottom">
+        <p>Independent reading room for EU institution and agency vacancies. Not affiliated with the EU institutions or euemployment.eu. Always verify at the agency.</p>
+        <p>Data: <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">euemployment.eu</a> · Built to be checked over coffee.</p>
+      </div>
+    </div>
+  </footer>
+
+  <noscript>
+    <div class="noscript-note">Filters need JavaScript. Without it, the full register is still visible below.</div>
+  </noscript>
+  <script src="/app.js" defer></script>
+</body>
+</html>
