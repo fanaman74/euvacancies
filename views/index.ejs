@@ -47,8 +47,8 @@
       </a>
 
       <nav class="main-nav" aria-label="Sections">
-        <a href="#categories"><span>01</span> Categories</a>
-        <a href="#ledger"><span>02</span> Register</a>
+        <a href="#ledger"><span>01</span> Register</a>
+        <a href="#categories"><span>02</span> Categories</a>
         <a href="#latest"><span>03</span> Latest</a>
         <a href="#method"><span>04</span> Method</a>
       </nav>
@@ -170,87 +170,16 @@
       </div>
 
       <div class="hero__foot">
-        <a class="scroll-cue" href="#categories">Scroll the register <span aria-hidden="true">↓</span></a>
+        <a class="scroll-cue" href="#ledger">Scroll the register <span aria-hidden="true">↓</span></a>
         <span class="hero__foot-rule" aria-hidden="true"></span>
         <span>01—05</span>
-      </div>
-    </section>
-
-    <section class="ways wrap" id="categories" aria-labelledby="ways-title">
-      <div class="ways__head">
-        <div>
-          <p class="section-index"><span>01</span> Open a file</p>
-          <h2 class="section-title" id="ways-title">Four ways to<br>scan the <span class="marker">register.</span></h2>
-        </div>
-        <div class="ways__aside">
-          <p>Contract agents, assistants, administrators, or the whole board. Four doors into the same source-linked record.</p>
-          <span class="ways__stamp" aria-hidden="true">Choose a file <b>→</b></span>
-        </div>
-      </div>
-
-      <div class="way-grid">
-        <button class="way-card category-door is-active" type="button" data-category-filter="all" aria-pressed="true" style="--r: -1.2deg">
-          <span class="way-card__tab">Register / 01</span>
-          <span class="way-card__top">
-            <span class="way-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-            </span>
-            <span class="way-card__num">01</span>
-          </span>
-          <span class="way-card__name">All records</span>
-          <span class="way-card__copy">The complete vacancy register, open and closed, ordered by deadline.</span>
-          <span class="way-card__cta"><span><%= categoryOpenCounts.all %> open · <%= categoryCounts.all %> on record</span><span>Scan all <span aria-hidden="true">→</span></span></span>
-          <span class="way-card__ghost" aria-hidden="true">ALL</span>
-        </button>
-
-        <button class="way-card category-door" type="button" data-category-filter="contract" aria-pressed="false" style="--r: 0.9deg">
-          <span class="way-card__tab">Register / 02</span>
-          <span class="way-card__top">
-            <span class="way-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V21H6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3.5V8h4M9 12h6M9 15.5h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </span>
-            <span class="way-card__num">02</span>
-          </span>
-          <span class="way-card__name">Contract agents</span>
-          <span class="way-card__copy">FG II–IV contracts in agencies and joint undertakings across the EU.</span>
-          <span class="way-card__cta"><span><%= categoryOpenCounts.contract %> open · <%= categoryCounts.contract %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
-          <span class="way-card__ghost" aria-hidden="true">CA</span>
-        </button>
-
-        <button class="way-card category-door" type="button" data-category-filter="assistant" aria-pressed="false" style="--r: 0.7deg">
-          <span class="way-card__tab">Register / 03</span>
-          <span class="way-card__top">
-            <span class="way-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M4.5 20v-2.2c0-2.4 2.4-4.3 5.4-4.3h4.2c3 0 5.4 1.9 5.4 4.3V20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7.5" r="3.8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-            </span>
-            <span class="way-card__num">03</span>
-          </span>
-          <span class="way-card__name">Assistants</span>
-          <span class="way-card__copy">AST and AST/SC support roles, from secretariats to operations.</span>
-          <span class="way-card__cta"><span><%= categoryOpenCounts.assistant %> open · <%= categoryCounts.assistant %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
-          <span class="way-card__ghost" aria-hidden="true">AST</span>
-        </button>
-
-        <button class="way-card category-door" type="button" data-category-filter="administrator" aria-pressed="false" style="--r: -0.8deg">
-          <span class="way-card__tab">Register / 04</span>
-          <span class="way-card__top">
-            <span class="way-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M12 3 20 6v5.5c0 4.8-3.2 8.1-8 9.5-4.8-1.4-8-4.7-8-9.5V6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.5 12 2.4 2.4 4.8-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-            <span class="way-card__num">04</span>
-          </span>
-          <span class="way-card__name">Administrators</span>
-          <span class="way-card__copy">AD and temporary-agent posts, including senior and specialist profiles.</span>
-          <span class="way-card__cta"><span><%= categoryOpenCounts.administrator %> open · <%= categoryCounts.administrator %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
-          <span class="way-card__ghost" aria-hidden="true">AD</span>
-        </button>
       </div>
     </section>
 
     <section class="register wrap" id="ledger" aria-labelledby="ledger-title">
       <div class="register__head">
         <div>
-          <p class="section-index"><span>02</span> The ledger</p>
+          <p class="section-index"><span>01</span> The ledger</p>
           <h2 class="section-title" id="ledger-title">Every vacancy,<br><span class="marker">one record.</span></h2>
         </div>
         <div class="register__aside">
@@ -401,6 +330,77 @@
       </div>
     </section>
 
+    <section class="ways wrap" id="categories" aria-labelledby="ways-title">
+      <div class="ways__head">
+        <div>
+          <p class="section-index"><span>02</span> Open a file</p>
+          <h2 class="section-title" id="ways-title">Four ways to<br>scan the <span class="marker">register.</span></h2>
+        </div>
+        <div class="ways__aside">
+          <p>Contract agents, assistants, administrators, or the whole board. Four doors into the same source-linked record.</p>
+          <span class="ways__stamp" aria-hidden="true">Choose a file <b>→</b></span>
+        </div>
+      </div>
+
+      <div class="way-grid">
+        <button class="way-card category-door is-active" type="button" data-category-filter="all" aria-pressed="true" style="--r: -1.2deg">
+          <span class="way-card__tab">Register / 01</span>
+          <span class="way-card__top">
+            <span class="way-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </span>
+            <span class="way-card__num">01</span>
+          </span>
+          <span class="way-card__name">All records</span>
+          <span class="way-card__copy">The complete vacancy register, open and closed, ordered by deadline.</span>
+          <span class="way-card__cta"><span><%= categoryOpenCounts.all %> open · <%= categoryCounts.all %> on record</span><span>Scan all <span aria-hidden="true">→</span></span></span>
+          <span class="way-card__ghost" aria-hidden="true">ALL</span>
+        </button>
+
+        <button class="way-card category-door" type="button" data-category-filter="contract" aria-pressed="false" style="--r: 0.9deg">
+          <span class="way-card__tab">Register / 02</span>
+          <span class="way-card__top">
+            <span class="way-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 3.5h8l4 4V21H6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3.5V8h4M9 12h6M9 15.5h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <span class="way-card__num">02</span>
+          </span>
+          <span class="way-card__name">Contract agents</span>
+          <span class="way-card__copy">FG II–IV contracts in agencies and joint undertakings across the EU.</span>
+          <span class="way-card__cta"><span><%= categoryOpenCounts.contract %> open · <%= categoryCounts.contract %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
+          <span class="way-card__ghost" aria-hidden="true">CA</span>
+        </button>
+
+        <button class="way-card category-door" type="button" data-category-filter="assistant" aria-pressed="false" style="--r: 0.7deg">
+          <span class="way-card__tab">Register / 03</span>
+          <span class="way-card__top">
+            <span class="way-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4.5 20v-2.2c0-2.4 2.4-4.3 5.4-4.3h4.2c3 0 5.4 1.9 5.4 4.3V20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="7.5" r="3.8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </span>
+            <span class="way-card__num">03</span>
+          </span>
+          <span class="way-card__name">Assistants</span>
+          <span class="way-card__copy">AST and AST/SC support roles, from secretariats to operations.</span>
+          <span class="way-card__cta"><span><%= categoryOpenCounts.assistant %> open · <%= categoryCounts.assistant %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
+          <span class="way-card__ghost" aria-hidden="true">AST</span>
+        </button>
+
+        <button class="way-card category-door" type="button" data-category-filter="administrator" aria-pressed="false" style="--r: -0.8deg">
+          <span class="way-card__tab">Register / 04</span>
+          <span class="way-card__top">
+            <span class="way-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3 20 6v5.5c0 4.8-3.2 8.1-8 9.5-4.8-1.4-8-4.7-8-9.5V6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m8.5 12 2.4 2.4 4.8-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="way-card__num">04</span>
+          </span>
+          <span class="way-card__name">Administrators</span>
+          <span class="way-card__copy">AD and temporary-agent posts, including senior and specialist profiles.</span>
+          <span class="way-card__cta"><span><%= categoryOpenCounts.administrator %> open · <%= categoryCounts.administrator %> on record</span><span>Open file <span aria-hidden="true">→</span></span></span>
+          <span class="way-card__ghost" aria-hidden="true">AD</span>
+        </button>
+      </div>
+    </section>
+
     <section class="latest" id="latest" aria-labelledby="latest-title">
       <div class="latest__bgword" aria-hidden="true">OPEN FILES</div>
       <div class="latest__inner wrap">
@@ -546,8 +546,8 @@
         </div>
         <div class="colophon__col">
           <h2>Register</h2>
-          <a href="#categories">Categories</a>
           <a href="#ledger">All vacancies</a>
+          <a href="#categories">Categories</a>
           <a href="#latest">Latest files</a>
         </div>
         <div class="colophon__col">

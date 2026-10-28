@@ -43,7 +43,7 @@ limited to data marks, tags and small bars so the archival world stays coherent.
 - Sticky masthead, black ticker rail, 84px desktop / 68px mobile.
 - Section rhythm: generous paper pauses between border-ruled field sections.
 - Hero: oversized display thesis, a dotted map field, a tilted paper dossier on the right.
-- Register: category doors in a 2×2 matrix, then a full-width ledger sheet.
+- Register: a full-width ledger sheet first, followed by the category doors in a 2×2 matrix.
 - Docket: near-black field with three tilted case cards.
 - Close: near-black CTA with a monumental statement and a circular source seal.
 
