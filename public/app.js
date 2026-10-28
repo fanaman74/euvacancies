@@ -155,7 +155,7 @@
     const mapHeight = 560;
     const scale = Math.min(width / mapWidth, height / mapHeight);
     const offsetX = (width - mapWidth * scale) / 2;
-    const offsetY = height - mapHeight * scale;
+    const offsetY = (height - mapHeight * scale) / 2;
     const padding = 12;
     const minDistance = 30;
     const points = mapDots.map((element) => ({
