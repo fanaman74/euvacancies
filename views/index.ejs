@@ -72,15 +72,10 @@
         <span class="hero__map-label">EU / AGENCIES / DUTY STATIONS</span>
       </div>
 
-      <div class="hero__record">
-        <div class="hero__meta">
-          <span class="file-tag"><b>File № <%= String(stats.total).padStart(3, '0') %></b></span>
-          <span>EU institutions / agencies</span>
-          <span>Public record / <%= today.slice(0, 4) %></span>
-        </div>
-        <div class="hero__source-row">
-          <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">Source: euemployment.eu <span aria-hidden="true">↗</span></a>
-        </div>
+      <div class="hero__meta">
+        <span class="file-tag"><b>File № <%= String(stats.total).padStart(3, '0') %></b></span>
+        <span>EU institutions / agencies</span>
+        <span>Public record / <%= today.slice(0, 4) %></span>
       </div>
 
       <h1 class="hero__title" id="hero-title">
@@ -112,6 +107,10 @@
             <span><b><%= stats.open %></b> open now</span>
             <span><b><%= stats.editions %></b> editions</span>
             <span><b>09:00</b> next check</span>
+          </div>
+
+          <div class="hero__source-row">
+            <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">Source: euemployment.eu <span aria-hidden="true">↗</span></a>
           </div>
 
           <p class="hero__annotation" aria-hidden="true">read the record,<br>not the ring binder ↘</p>
