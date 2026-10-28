@@ -7,6 +7,7 @@
   const tbody = document.getElementById('job-rows');
   if (!table || !tbody) return;
 
+  const PAGE_SIZE = 10;
   const rows = Array.from(tbody.querySelectorAll('.job-row'));
   const searchInput = document.getElementById('job-search');
   const locationFilter = document.getElementById('location-filter');
@@ -18,13 +19,19 @@
   const emptyState = document.getElementById('empty-state');
   const clearButton = document.getElementById('clear-filters');
   const emptyReset = document.getElementById('empty-reset');
+  const pagination = document.getElementById('pagination');
+  const pageTabs = document.getElementById('page-tabs');
+  const pageSummary = document.getElementById('page-summary');
+  const previousButton = document.getElementById('prev-page');
+  const nextButton = document.getElementById('next-page');
 
   const defaults = {
     category: 'all',
     location: 'all',
-    status: 'open',
+    status: 'all',
     sort: 'deadline',
     query: '',
+    page: 1,
   };
 
   const valid = {
@@ -40,6 +47,8 @@
   if (valid.sort.has(params.get('sort'))) state.sort = params.get('sort');
   if (params.get('location')) state.location = params.get('location');
   if (params.get('q')) state.query = params.get('q');
+  const requestedPage = Number.parseInt(params.get('page'), 10);
+  if (Number.isInteger(requestedPage) && requestedPage > 0) state.page = requestedPage;
 
   function normalise(value) {
     return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
@@ -89,12 +98,54 @@
     if (state.status !== defaults.status) next.set('status', state.status);
     if (state.sort !== defaults.sort) next.set('sort', state.sort);
     if (state.query.trim()) next.set('q', state.query.trim());
+    if (state.page > 1) next.set('page', String(state.page));
     const query = next.toString();
     const url = `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`;
     window.history.replaceState(null, '', url);
   }
 
-  function applyFilters() {
+  function renderPagination(totalPages, totalMatches) {
+    if (!pagination || !pageTabs) return;
+
+    const show = totalMatches > PAGE_SIZE;
+    pagination.hidden = !show;
+    if (!show) {
+      pageTabs.replaceChildren();
+      return;
+    }
+
+    pageTabs.replaceChildren();
+    for (let page = 1; page <= totalPages; page += 1) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'page-tab';
+      button.textContent = String(page).padStart(2, '0');
+      button.setAttribute('aria-label', `Page ${page} of ${totalPages}`);
+      if (page === state.page) {
+        button.classList.add('is-active');
+        button.setAttribute('aria-current', 'page');
+      }
+      button.addEventListener('click', () => {
+        if (state.page === page) return;
+        state.page = page;
+        applyFilters();
+        scrollToTable();
+      });
+      pageTabs.appendChild(button);
+    }
+
+    if (pageSummary) pageSummary.textContent = `Page ${state.page} of ${totalPages}`;
+    if (previousButton) previousButton.disabled = state.page <= 1;
+    if (nextButton) nextButton.disabled = state.page >= totalPages;
+  }
+
+  function scrollToTable() {
+    document.querySelector('.table-shell')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function applyFilters({ resetPage = false } = {}) {
+    if (resetPage) state.page = 1;
+
     if (locationFilter) locationFilter.value = state.location;
     if (statusFilter) statusFilter.value = state.status;
     if (sortFilter) sortFilter.value = state.sort;
@@ -109,22 +160,35 @@
     const ordered = sortedRows();
     ordered.forEach((row) => tbody.appendChild(row));
 
-    let shown = 0;
+    const matched = ordered.filter(rowMatches);
+    const totalPages = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
+    state.page = Math.min(Math.max(1, state.page), totalPages);
+
+    const start = (state.page - 1) * PAGE_SIZE;
+    const pageRows = matched.slice(start, start + PAGE_SIZE);
+    const visible = new Set(pageRows);
+
     rows.forEach((row) => {
-      const match = rowMatches(row);
-      row.hidden = !match;
-      if (match) shown += 1;
+      row.hidden = !visible.has(row);
     });
 
-    const total = rows.length;
-    const label = `Showing ${shown} of ${total}`;
+    const shown = pageRows.length;
+    const rangeStart = shown ? start + 1 : 0;
+    const rangeEnd = shown ? start + shown : 0;
+    const range = rangeStart === rangeEnd ? String(rangeStart) : `${rangeStart}–${rangeEnd}`;
+    const label = shown
+      ? `Showing ${range} of ${matched.length}`
+      : 'No matching roles';
+
     if (resultCount) resultCount.textContent = label;
     if (visibleCount) {
-      visibleCount.textContent = shown === 1 ? '1 role shown' : `${shown} roles shown`;
+      visibleCount.textContent = matched.length
+        ? `Page ${state.page} of ${totalPages} · ${matched.length} roles`
+        : '0 roles';
     }
-    if (emptyState) emptyState.hidden = shown !== 0;
-    table.hidden = shown === 0;
-
+    if (emptyState) emptyState.hidden = matched.length !== 0;
+    table.hidden = matched.length === 0;
+    renderPagination(totalPages, matched.length);
     updateUrl();
   }
 
@@ -133,29 +197,29 @@
     window.clearTimeout(searchTimer);
     searchTimer = window.setTimeout(() => {
       state.query = searchInput.value;
-      applyFilters();
+      applyFilters({ resetPage: true });
     }, 90);
   });
 
   locationFilter?.addEventListener('change', () => {
     state.location = locationFilter.value;
-    applyFilters();
+    applyFilters({ resetPage: true });
   });
 
   statusFilter?.addEventListener('change', () => {
     state.status = statusFilter.value;
-    applyFilters();
+    applyFilters({ resetPage: true });
   });
 
   sortFilter?.addEventListener('change', () => {
     state.sort = sortFilter.value;
-    applyFilters();
+    applyFilters({ resetPage: true });
   });
 
   categoryControls.forEach((control) => {
     control.addEventListener('click', () => {
       state.category = control.dataset.categoryFilter;
-      applyFilters();
+      applyFilters({ resetPage: true });
       if (control.classList.contains('category-door')) {
         document.getElementById('ledger')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -167,6 +231,20 @@
       document.getElementById('ledger')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       window.setTimeout(() => searchInput?.focus({ preventScroll: true }), 450);
     });
+  });
+
+  previousButton?.addEventListener('click', () => {
+    if (state.page <= 1) return;
+    state.page -= 1;
+    applyFilters();
+    scrollToTable();
+  });
+
+  nextButton?.addEventListener('click', () => {
+    if (nextButton.disabled) return;
+    state.page += 1;
+    applyFilters();
+    scrollToTable();
   });
 
   function resetFilters() {
@@ -194,7 +272,7 @@
     if (event.key === 'Escape' && target === searchInput) {
       searchInput.value = '';
       state.query = '';
-      applyFilters();
+      applyFilters({ resetPage: true });
       searchInput.blur();
     }
   });

@@ -187,7 +187,7 @@
         <div class="register__aside">
           <p>Search the full register, narrow it by category, station or closing window. Closed files stay visible for reference.</p>
           <div class="register__meta">
-            <span id="result-count" aria-live="polite">Showing <%= stats.open %> of <%= categoryCounts.all %></span>
+            <span id="result-count" aria-live="polite">Showing 1–<%= Math.min(10, categoryCounts.all) %> of <%= categoryCounts.all %></span>
             <span class="live-tag"><i class="live-dot" aria-hidden="true"></i>Live register</span>
           </div>
         </div>
@@ -225,9 +225,9 @@
             <label class="select-wrap">
               <span class="sr-only">Filter by status</span>
               <select id="status-filter">
-                <option value="open" selected>Open now</option>
+                <option value="all" selected>All roles</option>
+                <option value="open">Open now</option>
                 <option value="soon">Closing in 7 days</option>
-                <option value="all">All roles</option>
                 <option value="closed">Closed register</option>
               </select>
             </label>
@@ -269,6 +269,7 @@
                 data-published="<%= job.source_published_at ? new Date(job.source_published_at).toISOString() : '' %>"
                 data-salary="<%= job.salary_max || job.salary_min || 0 %>"
                 data-title="<%= job.title.toLowerCase() %>"
+                <%= index >= 10 ? 'hidden' : '' %>
               >
                 <td class="cell-index" data-label="#">
                   <span class="index-num"><%= String(index + 1).padStart(2, '0') %></span>
@@ -318,6 +319,19 @@
           </tbody>
         </table>
 
+        <nav class="pagination" id="pagination" aria-label="Register pages" hidden>
+          <span class="pagination__summary" id="page-summary">Page 1 of <%= Math.max(1, Math.ceil(categoryCounts.all / 10)) %></span>
+          <div class="pagination__tabs" id="page-tabs"></div>
+          <div class="pagination__arrows">
+            <button class="page-arrow" type="button" id="prev-page" aria-label="Previous page">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 5 7 10l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="page-arrow" type="button" id="next-page" aria-label="Next page">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m8 5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </nav>
+
         <div class="empty-state" id="empty-state" hidden>
           <span class="empty-star" aria-hidden="true">✳</span>
           <h3>No record matches that file.</h3>
@@ -326,7 +340,7 @@
         </div>
 
         <div class="table-foot">
-          <span id="visible-count">Showing <%= stats.open %> of <%= categoryCounts.all %> roles</span>
+          <span id="visible-count">Page 1 of <%= Math.max(1, Math.ceil(categoryCounts.all / 10)) %> · <%= categoryCounts.all %> roles</span>
           <span>Sources: <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">euemployment.eu</a> · Last sweep <%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'pending' %></span>
         </div>
       </div>
@@ -577,7 +591,7 @@
   </footer>
 
   <noscript>
-    <div class="noscript-note">Filters need JavaScript. Without it, the full register is still visible below.</div>
+    <div class="noscript-note">Filters and pagination need JavaScript. Without it, the first page of the register is shown.</div>
   </noscript>
   <script src="/app.js" defer></script>
 </body>

@@ -1180,6 +1180,7 @@ h3 { text-wrap: balance; }
   background: var(--paper-hi);
   border: var(--line);
   box-shadow: 10px 10px 0 var(--ink);
+  scroll-margin-top: calc(var(--header-h) + 12px);
 }
 .job-table {
   width: 100%;
@@ -1397,6 +1398,60 @@ h3 { text-wrap: balance; }
 }
 .source-link:hover { background: var(--pink); }
 .source-link svg { width: 12px; height: 12px; }
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .8rem 1rem;
+  border-top: 1px solid rgba(23, 20, 18, .22);
+  background: var(--paper);
+}
+.pagination__summary {
+  flex: 1 1 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: .06em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pagination__tabs {
+  display: flex;
+  flex: 2 1 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .3rem;
+}
+.pagination__arrows {
+  display: flex;
+  flex: 1 1 0;
+  justify-content: flex-end;
+  gap: .3rem;
+}
+.page-tab,
+.page-arrow {
+  display: inline-grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 .4rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: .03em;
+  cursor: pointer;
+  transition: color .18s ease, background .18s ease;
+}
+.page-tab:hover,
+.page-arrow:hover:not(:disabled) { color: var(--ink); background: var(--pink); }
+.page-tab.is-active { color: var(--ink); background: var(--pink); }
+.page-arrow { padding: 0; }
+.page-arrow svg { width: 15px; height: 15px; }
+.page-arrow:disabled { opacity: .3; cursor: not-allowed; }
 .table-foot {
   display: flex;
   align-items: center;
@@ -2114,7 +2169,11 @@ h3 { text-wrap: balance; }
   .deadline-relative { margin-top: 0; }
   .cell-apply { padding-top: .7rem !important; }
   .apply-group { max-width: 220px; margin-left: auto; }
-  .table-foot { align-items: flex-start; flex-direction: column; gap: .4rem; padding: .8rem 0 0; border-top: 2px solid var(--ink); margin-top: 1.2rem; }
+  .pagination { flex-wrap: wrap; gap: .6rem; padding: .8rem 0 0; border-top: 2px solid var(--ink); margin-top: 1.2rem; background: transparent; }
+  .pagination__summary { flex: 1 1 100%; }
+  .pagination__tabs { flex: 1 1 auto; justify-content: flex-start; }
+  .pagination__arrows { flex: 0 0 auto; }
+  .table-foot { align-items: flex-start; flex-direction: column; gap: .4rem; padding: .8rem 0 0; border-top: 1px dashed rgba(23, 20, 18, .35); margin-top: .9rem; }
   .latest__inner { padding-top: 3.6rem; }
   .latest__head { grid-template-columns: 1fr; }
   .latest__counter { display: none; }

@@ -56,6 +56,7 @@ limited to data marks, tags and small bars so the archival world stays coherent.
   ghost abbreviation; active state is hot pink.
 - **Filter bar** — paper sheet with search, square-tab filters and mono selects.
 - **Table** — compact archival ledger; ink header, dashed row rules, data chips, direct apply.
+- **Pagination** — ten rows per page, numbered paper tabs with a hot-pink active tab and mono arrows.
 - **Chips** — rectangular, 1px ink border, uppercase mono; category fills contract pink,
   assistant lime, administrator periwinkle; status fills are semantic.
 - **Seal** — circular SVG text path, used once in the close; no repeated badge clutter.

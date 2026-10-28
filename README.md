@@ -21,8 +21,8 @@ language of [eujust.online](https://www.eujust.online/).
 - Fingerprints each role from **title + agency + duty station + grade**. A role repeated in
   four weekly roundups becomes one row, not four. Rows record the source editions they
   appeared in and the last time they were seen.
-- Serves a responsive, filterable vacancy register and JSON API. Closed roles stay in the
-  ledger for reference and are shown with a closed status.
+- Serves a responsive, filterable vacancy register and JSON API. All roles are paginated
+  10 per page; closed roles stay in the ledger for reference and are shown with a closed status.
 - Presents four source-linked category doors, a case-file table, a latest-files docket and a
   plain-language method note. The visual world is documented in [DESIGN.md](DESIGN.md).
 
