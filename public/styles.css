@@ -323,7 +323,7 @@ h3 { text-wrap: balance; }
 /* ---------- hero ---------- */
 
 .hero {
-  --hero-min: max(720px, calc(100vh - var(--header-h) - 40px));
+  --hero-min: 640px;
   position: relative;
   isolation: isolate;
   display: flex;
@@ -523,7 +523,7 @@ h3 { text-wrap: balance; }
   width: min(100%, var(--wrap));
   min-height: inherit;
   margin: 0 auto;
-  padding: clamp(2rem, 3.6vw, 3.4rem) var(--gutter) 1.2rem;
+  padding: clamp(2rem, 3.6vw, 3.4rem) var(--gutter) .6rem;
   pointer-events: none;
 }
 .hero__overlay a,
@@ -590,7 +590,7 @@ h3 { text-wrap: balance; }
   display: block;
   width: fit-content;
   max-width: 100%;
-  margin-top: .12em;
+  margin-top: .2em;
 }
 .hero__line--mark {
   display: inline;
@@ -603,7 +603,7 @@ h3 { text-wrap: balance; }
   box-decoration-break: clone;
   filter: drop-shadow(5px 5px 0 var(--ink));
   transform: none;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 .hero__intro {
   max-width: 520px;
@@ -733,8 +733,8 @@ h3 { text-wrap: balance; }
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: auto;
-  padding-top: 1.4rem;
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
   border-top: 1px solid rgba(23, 20, 18, .35);
   color: var(--muted);
   font-family: var(--mono);
@@ -2055,7 +2055,7 @@ h3 { text-wrap: balance; }
 
 @media (max-width: 980px) {
   .main-nav { display: none; }
-  .hero { --hero-min: max(680px, calc(100vh - var(--header-h) - 36px)); }
+  .hero { --hero-min: 600px; }
   .hero__overlay { padding-top: 1.8rem; }
   .hero__map-stage { width: 55%; height: 68%; }
   .hero__map-ui { font-size: 6px; }
