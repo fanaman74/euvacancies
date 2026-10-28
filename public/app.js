@@ -15,7 +15,7 @@
   const sortFilter = document.getElementById('sort-filter');
   const categoryControls = Array.from(document.querySelectorAll('[data-category-filter]'));
   const mapDots = Array.from(document.querySelectorAll('[data-map-country]'));
-  const mapCanvas = document.querySelector('.map-card__canvas');
+  const mapCanvas = document.querySelector('.hero__map-stage');
   const resultCount = document.getElementById('result-count');
   const visibleCount = document.getElementById('visible-count');
   const emptyState = document.getElementById('empty-state');
@@ -151,12 +151,17 @@
     const height = mapCanvas.clientHeight;
     if (!width || !height) return;
 
-    const padding = 14;
-    const minDistance = 28;
+    const mapWidth = 760;
+    const mapHeight = 560;
+    const scale = Math.min(width / mapWidth, height / mapHeight);
+    const offsetX = (width - mapWidth * scale) / 2;
+    const offsetY = height - mapHeight * scale;
+    const padding = 12;
+    const minDistance = 30;
     const points = mapDots.map((element) => ({
       element,
-      x: Math.max(padding, Math.min(width - padding, (Number(element.dataset.mapX) / 100) * width)),
-      y: Math.max(padding, Math.min(height - padding, (Number(element.dataset.mapY) / 100) * height)),
+      x: Math.max(padding, Math.min(width - padding, offsetX + (Number(element.dataset.mapX) / 100) * mapWidth * scale)),
+      y: Math.max(padding, Math.min(height - padding, offsetY + (Number(element.dataset.mapY) / 100) * mapHeight * scale)),
     }));
 
     for (let iteration = 0; iteration < 80; iteration += 1) {

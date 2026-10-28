@@ -64,27 +64,61 @@
   </header>
 
   <main id="top">
-    <section class="hero wrap" aria-labelledby="hero-title">
-      <div class="hero__map" aria-hidden="true">
-        <div class="hero__map-dots"></div>
-        <span class="hero__map-mark hero__map-mark--one">+</span>
-        <span class="hero__map-mark hero__map-mark--two">+</span>
-        <span class="hero__map-label">EU / AGENCIES / DUTY STATIONS</span>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__map-stage">
+        <svg class="hero__map-svg" viewBox="<%= europeMap.viewBox %>" preserveAspectRatio="xMidYMax meet" role="img" aria-labelledby="map-title">
+          <title id="map-title">Map of Europe showing vacancy locations by country</title>
+          <g class="map-countries">
+            <% europeMap.countries.forEach((country) => { %>
+              <path class="map-country <%= mapCountryCodes.has(country.code) ? 'has-roles' : '' %>" d="<%= country.path %>"></path>
+            <% }); %>
+          </g>
+        </svg>
+
+        <div class="map-dots">
+          <% mapPoints.forEach((point, index) => { %>
+            <% const dotSize = Math.min(22, Math.round(9 + Math.sqrt(point.total) * 3.6)); %>
+            <button
+              class="map-dot"
+              type="button"
+              data-map-country="<%= point.code %>"
+              data-map-x="<%= ((point.x / europeMap.width) * 100).toFixed(3) %>"
+              data-map-y="<%= ((point.y / europeMap.height) * 100).toFixed(3) %>"
+              style="--x: <%= ((point.x / europeMap.width) * 100).toFixed(2) %>%; --y: <%= ((point.y / europeMap.height) * 100).toFixed(2) %>%; --dot-size: <%= dotSize %>px; --delay: <%= (index % 9) * 0.22 %>s"
+              aria-label="Filter the register by <%= point.country %>: <%= point.total %> roles, <%= point.open %> open"
+            >
+              <span class="map-dot__ring" aria-hidden="true"></span>
+              <span class="map-dot__dot" aria-hidden="true"></span>
+              <span class="map-dot__tip">
+                <b><%= point.flag %> <%= point.country %></b>
+                <span><%= point.total %> roles · <%= point.open %> open</span>
+                <small><%= point.cities.slice(0, 3).join(' / ') %></small>
+              </span>
+            </button>
+          <% }); %>
+        </div>
+
+        <div class="hero__map-ui">
+          <span>Vacancy map / Europe</span>
+          <span><%= stats.total %> roles · <%= mapPoints.length %> countries</span>
+          <small>Tap a country dot to filter the register</small>
+        </div>
+
       </div>
 
-      <div class="hero__meta">
-        <span class="file-tag"><b>File № <%= String(stats.total).padStart(3, '0') %></b></span>
-        <span>EU institutions / agencies</span>
-        <span>Public record / <%= today.slice(0, 4) %></span>
-      </div>
+      <div class="hero__overlay wrap">
+        <div class="hero__meta">
+          <span class="file-tag"><b>File № <%= String(stats.total).padStart(3, '0') %></b></span>
+          <span>EU institutions / agencies</span>
+          <span>Public record / <%= today.slice(0, 4) %></span>
+        </div>
 
-      <h1 class="hero__title" id="hero-title">
-        <span class="hero__line">EU vacancies.</span>
-        <span class="hero__line hero__line--mark">Straight to the source.</span>
-      </h1>
+        <div class="hero__content">
+          <h1 class="hero__title" id="hero-title">
+            <span class="hero__line">EU vacancies.</span>
+            <span class="hero__line hero__line--mark">Straight to the source.</span>
+          </h1>
 
-      <div class="hero__grid">
-        <div class="hero__copy">
           <p class="hero__intro">
             Direct vacancies from EU institutions and agencies. Pulled from the weekly
             <a href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">euemployment.eu</a>
@@ -116,73 +150,11 @@
           <p class="hero__annotation" aria-hidden="true">read the record,<br>not the ring binder ↘</p>
         </div>
 
-        <div class="hero__file-wrap">
-          <aside class="map-card" aria-label="Map of vacancy locations across Europe">
-            <span class="tape tape--file" aria-hidden="true"></span>
-            <span class="map-card__clip" aria-hidden="true">
-              <svg viewBox="0 0 40 64" role="img"><path d="M12 15v31a8 8 0 0 0 16 0V11a6 6 0 0 0-12 0v33a4 4 0 0 0 8 0V18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-            </span>
-
-            <div class="map-card__top">
-              <span>Vacancy map / Europe</span>
-              <span><%= stats.total %> roles · <%= mapPoints.length %> countries</span>
-            </div>
-
-            <div class="map-card__headline">
-              <h2>Where the<br>roles are.</h2>
-              <p>Tap a country dot<br>to filter the register.</p>
-            </div>
-
-            <div class="map-card__canvas">
-              <svg class="map-card__svg" viewBox="<%= europeMap.viewBox %>" role="img" aria-labelledby="map-title">
-                <title id="map-title">Map of Europe showing vacancy locations by country</title>
-                <g class="map-countries">
-                  <% europeMap.countries.forEach((country) => { %>
-                    <path class="map-country <%= mapCountryCodes.has(country.code) ? 'has-roles' : '' %>" d="<%= country.path %>"></path>
-                  <% }); %>
-                </g>
-              </svg>
-
-              <div class="map-dots">
-                <% mapPoints.forEach((point, index) => { %>
-                  <% const dotSize = Math.min(18, Math.round(7 + Math.sqrt(point.total) * 3)); %>
-                  <button
-                    class="map-dot"
-                    type="button"
-                    data-map-country="<%= point.code %>"
-                    data-map-x="<%= ((point.x / europeMap.width) * 100).toFixed(3) %>"
-                    data-map-y="<%= ((point.y / europeMap.height) * 100).toFixed(3) %>"
-                    style="--x: <%= ((point.x / europeMap.width) * 100).toFixed(2) %>%; --y: <%= ((point.y / europeMap.height) * 100).toFixed(2) %>%; --dot-size: <%= dotSize %>px; --delay: <%= (index % 9) * 0.22 %>s"
-                    aria-label="Filter the register by <%= point.country %>: <%= point.total %> roles, <%= point.open %> open"
-                  >
-                    <span class="map-dot__ring" aria-hidden="true"></span>
-                    <span class="map-dot__dot" aria-hidden="true"></span>
-                    <span class="map-dot__tip">
-                      <b><%= point.flag %> <%= point.country %></b>
-                      <span><%= point.total %> roles · <%= point.open %> open</span>
-                      <small><%= point.cities.slice(0, 3).join(' / ') %></small>
-                    </span>
-                  </button>
-                <% }); %>
-              </div>
-
-              <span class="map-card__key"><i aria-hidden="true"></i> vacancy location</span>
-            </div>
-
-            <div class="map-card__foot">
-              <span><%= mapPoints.length %> countries · <%= stats.open %> open now</span>
-              <a href="#ledger">Open the register <span aria-hidden="true">↓</span></a>
-            </div>
-          </aside>
-
-          <p class="hero__file-note">Every dot opens the register filtered by country. <span>No dead ends.</span></p>
+        <div class="hero__foot">
+          <a class="scroll-cue" href="#ledger">Scroll the register <span aria-hidden="true">↓</span></a>
+          <span class="hero__foot-rule" aria-hidden="true"></span>
+          <span>01—05</span>
         </div>
-      </div>
-
-      <div class="hero__foot">
-        <a class="scroll-cue" href="#ledger">Scroll the register <span aria-hidden="true">↓</span></a>
-        <span class="hero__foot-rule" aria-hidden="true"></span>
-        <span>01—05</span>
       </div>
     </section>
 

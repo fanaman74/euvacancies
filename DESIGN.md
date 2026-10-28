@@ -42,7 +42,7 @@ limited to data marks, tags and small bars so the archival world stays coherent.
 - Fixed hairline page edges at 9px; fixed grain overlay at 16%.
 - Sticky masthead, black ticker rail, 84px desktop / 68px mobile.
 - Section rhythm: generous paper pauses between border-ruled field sections.
-- Hero: oversized display thesis, a dotted map field, and a tilted interactive vacancy map of Europe on the right.
+- Hero: full-bleed interactive map of Europe with the display thesis and copy overlaid on a paper wash.
 - Register: a full-width ledger sheet first, followed by the category doors in a 2×2 matrix.
 - Docket: near-black field with three tilted case cards.
 - Close: near-black CTA with a monumental statement and a circular source seal.
@@ -50,8 +50,8 @@ limited to data marks, tags and small bars so the archival world stays coherent.
 ## Components
 
 - **Ledger sheet** — paper-hi, 2px ink border, hard ink shadow, tape corners, inset hairline.
-- **Map card** — taped paper sheet with a Mercator Europe map, muted country fills, hot-pink
-  pulsing country dots, hover/focus tooltips, and country filtering on click.
+- **Map layer** — full-bleed Mercator Europe map with muted country fills, a paper wash behind
+  the copy, hot-pink pulsing country dots, hover/focus tooltips, and country filtering on click.
 - **Dossier / case card** — paper-hi or pink, 2px ink border, offset pink/ink shadow, tape,
   mono top line, ruled separation, ghost numeral.
 - **Category door** — 2×2 button cards, 330px min height, icon disc, outlined numeral,
@@ -72,6 +72,6 @@ is disabled under `prefers-reduced-motion`.
 ## Responsive
 
 - 1180px: masthead compresses, hero type scales, table columns tighten.
-- 980px: one-column hero, category and section heads stack.
+- 980px: hero map softens behind the copy; category and section heads stack.
 - 820px: table rows become case cards; filters stack; footer becomes two columns.
-- 480px: hero first line locks to one line, category filters lose counts, footer compacts.
+- 480px: hero type tightens, category filters lose counts, footer compacts.
