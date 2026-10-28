@@ -586,6 +586,12 @@ h3 { text-wrap: balance; }
   max-width: 100%;
   white-space: nowrap;
 }
+.hero__mark-wrap {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: .12em;
+}
 .hero__line--mark {
   display: inline;
   width: auto;
@@ -597,7 +603,7 @@ h3 { text-wrap: balance; }
   box-decoration-break: clone;
   filter: drop-shadow(5px 5px 0 var(--ink));
   transform: none;
-  line-height: 1.05;
+  line-height: 1.2;
 }
 .hero__intro {
   max-width: 520px;
