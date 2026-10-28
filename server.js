@@ -8,6 +8,7 @@ const compression = require('compression');
 const { initDb, query, getPool } = require('./src/db');
 const { runSync, getLastSync } = require('./src/sync');
 const { startScheduler, getScheduleInfo, TIMEZONE } = require('./src/scheduler');
+const europeMap = require('./src/europe-map.json');
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -235,6 +236,74 @@ async function loadSiteData() {
   ).values()].sort((a, b) => a.country.localeCompare(b.country));
 
   const liveJobs = jobs.filter((job) => job.status !== 'closed');
+
+  const mapCityKey = (value) => String(value || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[^\p{L}\s-]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const mapGroups = new Map();
+  for (const job of jobs) {
+    if (!job.country_code) continue;
+    if (!mapGroups.has(job.country_code)) {
+      mapGroups.set(job.country_code, {
+        code: job.country_code,
+        country: job.location_country,
+        flag: job.flag,
+        total: 0,
+        open: 0,
+        cities: new Map(),
+        weights: new Map(),
+      });
+    }
+    const group = mapGroups.get(job.country_code);
+    group.total += 1;
+    if (job.status !== 'closed') group.open += 1;
+
+    const city = (job.location_city || '').trim();
+    if (city) {
+      group.cities.set(city, (group.cities.get(city) || 0) + 1);
+      const coordinate = europeMap.cityPoints[mapCityKey(city)];
+      if (coordinate) {
+        const key = `${coordinate.x},${coordinate.y}`;
+        const weight = group.weights.get(key) || { ...coordinate, count: 0 };
+        weight.count += 1;
+        group.weights.set(key, weight);
+      }
+    }
+  }
+
+  const mapPoints = [...mapGroups.values()]
+    .map((group) => {
+      let point = null;
+      if (group.weights.size) {
+        const coordinates = [...group.weights.values()];
+        const weightTotal = coordinates.reduce((sum, item) => sum + item.count, 0);
+        point = {
+          x: coordinates.reduce((sum, item) => sum + item.x * item.count, 0) / weightTotal,
+          y: coordinates.reduce((sum, item) => sum + item.y * item.count, 0) / weightTotal,
+        };
+      } else {
+        point = europeMap.countryPoints[group.code] || null;
+      }
+      if (!point) return null;
+      return {
+        code: group.code,
+        country: group.country,
+        flag: group.flag,
+        total: group.total,
+        open: group.open,
+        x: Math.round(point.x * 10) / 10,
+        y: Math.round(point.y * 10) / 10,
+        cities: [...group.cities.entries()].sort((a, b) => b[1] - a[1]).map(([name]) => name),
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.total - a.total || a.country.localeCompare(b.country));
+
+  const mapCountryCodes = new Set(mapPoints.map((point) => point.code));
   const categoryOpenCounts = {
     all: liveJobs.length,
     contract: liveJobs.filter((job) => job.category === 'Contract Agents').length,
@@ -273,6 +342,9 @@ async function loadSiteData() {
     categoryOpenCounts,
     latestCategoryCounts,
     locations,
+    europeMap,
+    mapPoints,
+    mapCountryCodes,
     formatSyncTime,
     formatEditionDate,
     safeJson,

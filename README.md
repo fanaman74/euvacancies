@@ -23,7 +23,8 @@ language of [eujust.online](https://www.eujust.online/).
   appeared in and the last time they were seen.
 - Serves a responsive, filterable vacancy register and JSON API. All roles are paginated
   10 per page; closed roles stay in the ledger for reference and are shown with a closed status.
-- Presents four source-linked category doors, a case-file table, a latest-files docket and a
+- Presents an interactive vacancy map of Europe in the hero; each country dot filters the
+  register. Also includes the paginated ledger, category doors, latest-files docket and a
   plain-language method note. The visual world is documented in [DESIGN.md](DESIGN.md).
 
 ## Stack
@@ -55,6 +56,7 @@ Useful commands:
 npm test                # parser/unit tests
 npm run sync            # manual sync against the configured database
 npm run db:init         # create/upgrade tables and indexes
+npm run map             # regenerate the Europe map from world-atlas
 npm start               # production start
 ```
 

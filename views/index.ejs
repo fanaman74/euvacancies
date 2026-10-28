@@ -116,58 +116,65 @@
         </div>
 
         <div class="hero__file-wrap">
-          <aside class="file-card" aria-label="Latest register edition">
+          <aside class="map-card" aria-label="Map of vacancy locations across Europe">
             <span class="tape tape--file" aria-hidden="true"></span>
-            <span class="file-card__clip" aria-hidden="true">
+            <span class="map-card__clip" aria-hidden="true">
               <svg viewBox="0 0 40 64" role="img"><path d="M12 15v31a8 8 0 0 0 16 0V11a6 6 0 0 0-12 0v33a4 4 0 0 0 8 0V18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
             </span>
-            <div class="file-card__top">
-              <span>Latest on file</span>
-              <span><%= latestEdition ? formatEditionDate(latestEdition.source_published_at) : 'Awaiting first sweep' %></span>
+
+            <div class="map-card__top">
+              <span>Vacancy map / Europe</span>
+              <span><%= stats.total %> roles · <%= mapPoints.length %> countries</span>
             </div>
 
-            <% if (latestEdition) { %>
-              <% const latestTotal = Math.max(latestEdition.jobs, 1); %>
-              <div class="file-card__count">
-                <span><%= latestEdition.jobs %></span>
-                <small>roles in the<br>newest roundup</small>
+            <div class="map-card__headline">
+              <h2>Where the<br>roles are.</h2>
+              <p>Tap a country dot<br>to filter the register.</p>
+            </div>
+
+            <div class="map-card__canvas">
+              <svg class="map-card__svg" viewBox="<%= europeMap.viewBox %>" role="img" aria-labelledby="map-title">
+                <title id="map-title">Map of Europe showing vacancy locations by country</title>
+                <g class="map-countries">
+                  <% europeMap.countries.forEach((country) => { %>
+                    <path class="map-country <%= mapCountryCodes.has(country.code) ? 'has-roles' : '' %>" d="<%= country.path %>"></path>
+                  <% }); %>
+                </g>
+              </svg>
+
+              <div class="map-dots">
+                <% mapPoints.forEach((point, index) => { %>
+                  <% const dotSize = Math.min(18, Math.round(7 + Math.sqrt(point.total) * 3)); %>
+                  <button
+                    class="map-dot"
+                    type="button"
+                    data-map-country="<%= point.code %>"
+                    data-map-x="<%= ((point.x / europeMap.width) * 100).toFixed(3) %>"
+                    data-map-y="<%= ((point.y / europeMap.height) * 100).toFixed(3) %>"
+                    style="--x: <%= ((point.x / europeMap.width) * 100).toFixed(2) %>%; --y: <%= ((point.y / europeMap.height) * 100).toFixed(2) %>%; --dot-size: <%= dotSize %>px; --delay: <%= (index % 9) * 0.22 %>s"
+                    aria-label="Filter the register by <%= point.country %>: <%= point.total %> roles, <%= point.open %> open"
+                  >
+                    <span class="map-dot__ring" aria-hidden="true"></span>
+                    <span class="map-dot__dot" aria-hidden="true"></span>
+                    <span class="map-dot__tip">
+                      <b><%= point.flag %> <%= point.country %></b>
+                      <span><%= point.total %> roles · <%= point.open %> open</span>
+                      <small><%= point.cities.slice(0, 3).join(' / ') %></small>
+                    </span>
+                  </button>
+                <% }); %>
               </div>
-              <h2 class="file-card__title">The latest<br>from the wire.</h2>
 
-              <div class="file-card__bars" aria-label="Latest edition by category">
-                <div class="file-bar">
-                  <span>Contract</span>
-                  <b><%= latestCategoryCounts.contract %></b>
-                  <i style="--bar: <%= Math.max(7, Math.round((latestCategoryCounts.contract / latestTotal) * 100)) %>%"></i>
-                </div>
-                <div class="file-bar">
-                  <span>Assistants</span>
-                  <b><%= latestCategoryCounts.assistant %></b>
-                  <i style="--bar: <%= Math.max(7, Math.round((latestCategoryCounts.assistant / latestTotal) * 100)) %>%"></i>
-                </div>
-                <div class="file-bar">
-                  <span>Administrators</span>
-                  <b><%= latestCategoryCounts.administrator %></b>
-                  <i style="--bar: <%= Math.max(7, Math.round((latestCategoryCounts.administrator / latestTotal) * 100)) %>%"></i>
-                </div>
-              </div>
+              <span class="map-card__key"><i aria-hidden="true"></i> vacancy location</span>
+            </div>
 
-              <div class="file-card__rule" aria-hidden="true"></div>
-              <p class="file-card__note">Curated from the latest weekly roundup. Financials and deadlines are copied from the source notice — always confirm at the agency.</p>
-              <a class="file-card__link" href="<%= latestEdition.source_post_url %>" target="_blank" rel="noopener noreferrer">
-                Open the source edition
-                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-            <% } else { %>
-              <div class="file-card__count"><span>00</span><small>roles in the<br>newest roundup</small></div>
-              <h2 class="file-card__title">The first<br>sweep is due.</h2>
-              <p class="file-card__note">The register is waiting for its first automated check of the source.</p>
-              <a class="file-card__link" href="https://euemployment.eu/category/vacancies/" target="_blank" rel="noopener noreferrer">Visit the source <span aria-hidden="true">↗</span></a>
-            <% } %>
-
+            <div class="map-card__foot">
+              <span><%= mapPoints.length %> countries · <%= stats.open %> open now</span>
+              <a href="#ledger">Open the register <span aria-hidden="true">↓</span></a>
+            </div>
           </aside>
 
-          <p class="hero__file-note">Every record points back to the agency. <span>No dead ends.</span></p>
+          <p class="hero__file-note">Every dot opens the register filtered by country. <span>No dead ends.</span></p>
         </div>
       </div>
 

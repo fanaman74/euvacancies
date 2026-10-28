@@ -42,7 +42,7 @@ limited to data marks, tags and small bars so the archival world stays coherent.
 - Fixed hairline page edges at 9px; fixed grain overlay at 16%.
 - Sticky masthead, black ticker rail, 84px desktop / 68px mobile.
 - Section rhythm: generous paper pauses between border-ruled field sections.
-- Hero: oversized display thesis, a dotted map field, a tilted paper dossier on the right.
+- Hero: oversized display thesis, a dotted map field, and a tilted interactive vacancy map of Europe on the right.
 - Register: a full-width ledger sheet first, followed by the category doors in a 2×2 matrix.
 - Docket: near-black field with three tilted case cards.
 - Close: near-black CTA with a monumental statement and a circular source seal.
@@ -50,6 +50,8 @@ limited to data marks, tags and small bars so the archival world stays coherent.
 ## Components
 
 - **Ledger sheet** — paper-hi, 2px ink border, hard ink shadow, tape corners, inset hairline.
+- **Map card** — taped paper sheet with a Mercator Europe map, muted country fills, hot-pink
+  pulsing country dots, hover/focus tooltips, and country filtering on click.
 - **Dossier / case card** — paper-hi or pink, 2px ink border, offset pink/ink shadow, tape,
   mono top line, ruled separation, ghost numeral.
 - **Category door** — 2×2 button cards, 330px min height, icon disc, outlined numeral,

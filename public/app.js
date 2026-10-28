@@ -14,6 +14,8 @@
   const statusFilter = document.getElementById('status-filter');
   const sortFilter = document.getElementById('sort-filter');
   const categoryControls = Array.from(document.querySelectorAll('[data-category-filter]'));
+  const mapDots = Array.from(document.querySelectorAll('[data-map-country]'));
+  const mapCanvas = document.querySelector('.map-card__canvas');
   const resultCount = document.getElementById('result-count');
   const visibleCount = document.getElementById('visible-count');
   const emptyState = document.getElementById('empty-state');
@@ -143,6 +145,58 @@
     document.querySelector('.table-shell')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function layoutMapDots() {
+    if (!mapCanvas || !mapDots.length) return;
+    const width = mapCanvas.clientWidth;
+    const height = mapCanvas.clientHeight;
+    if (!width || !height) return;
+
+    const padding = 14;
+    const minDistance = 28;
+    const points = mapDots.map((element) => ({
+      element,
+      x: Math.max(padding, Math.min(width - padding, (Number(element.dataset.mapX) / 100) * width)),
+      y: Math.max(padding, Math.min(height - padding, (Number(element.dataset.mapY) / 100) * height)),
+    }));
+
+    for (let iteration = 0; iteration < 80; iteration += 1) {
+      let moved = false;
+      for (let i = 0; i < points.length; i += 1) {
+        for (let j = i + 1; j < points.length; j += 1) {
+          const a = points[i];
+          const b = points[j];
+          let dx = b.x - a.x;
+          let dy = b.y - a.y;
+          let distance = Math.hypot(dx, dy);
+          if (distance >= minDistance) continue;
+          if (distance < 0.01) {
+            dx = 1;
+            dy = 0;
+            distance = 1;
+          }
+          const push = (minDistance - distance) / 2;
+          const nx = dx / distance;
+          const ny = dy / distance;
+          a.x -= nx * push;
+          a.y -= ny * push;
+          b.x += nx * push;
+          b.y += ny * push;
+          moved = true;
+        }
+      }
+      for (const point of points) {
+        point.x = Math.max(padding, Math.min(width - padding, point.x));
+        point.y = Math.max(padding, Math.min(height - padding, point.y));
+      }
+      if (!moved) break;
+    }
+
+    for (const point of points) {
+      point.element.style.left = `${point.x}px`;
+      point.element.style.top = `${point.y}px`;
+    }
+  }
+
   function applyFilters({ resetPage = false } = {}) {
     if (resetPage) state.page = 1;
 
@@ -155,6 +209,10 @@
       const active = control.dataset.categoryFilter === state.category;
       control.classList.toggle('is-active', active);
       control.setAttribute('aria-pressed', String(active));
+    });
+
+    mapDots.forEach((dot) => {
+      dot.classList.toggle('is-active', dot.dataset.mapCountry === state.location);
     });
 
     const ordered = sortedRows();
@@ -226,6 +284,14 @@
     });
   });
 
+  mapDots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      state.location = dot.dataset.mapCountry;
+      applyFilters({ resetPage: true });
+      document.getElementById('ledger')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
   document.querySelectorAll('[data-focus-search]').forEach((button) => {
     button.addEventListener('click', () => {
       document.getElementById('ledger')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -278,4 +344,11 @@
   });
 
   applyFilters();
+  layoutMapDots();
+
+  let mapResizeTimer;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(mapResizeTimer);
+    mapResizeTimer = window.setTimeout(layoutMapDots, 120);
+  });
 })();
