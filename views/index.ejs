@@ -47,11 +47,10 @@
       </a>
 
       <nav class="main-nav" aria-label="Sections">
-        <a href="#overview"><span>01</span> Overview</a>
-        <a href="#categories"><span>02</span> Categories</a>
-        <a href="#ledger"><span>03</span> Register</a>
-        <a href="#latest"><span>04</span> Latest</a>
-        <a href="#method"><span>05</span> Method</a>
+        <a href="#categories"><span>01</span> Categories</a>
+        <a href="#ledger"><span>02</span> Register</a>
+        <a href="#latest"><span>03</span> Latest</a>
+        <a href="#method"><span>04</span> Method</a>
       </nav>
 
       <div class="masthead__tools">
@@ -171,59 +170,16 @@
       </div>
 
       <div class="hero__foot">
-        <a class="scroll-cue" href="#overview">Scroll the register <span aria-hidden="true">↓</span></a>
+        <a class="scroll-cue" href="#categories">Scroll the register <span aria-hidden="true">↓</span></a>
         <span class="hero__foot-rule" aria-hidden="true"></span>
         <span>01—05</span>
-      </div>
-    </section>
-
-    <section class="overview wrap" id="overview" aria-labelledby="overview-title">
-      <div class="overview__head">
-        <div>
-          <p class="section-index"><span>01</span> The record</p>
-          <h2 class="section-title" id="overview-title">Register <span class="marker">overview.</span></h2>
-        </div>
-        <p class="overview__intro">
-          A bounded register of direct-entry EU vacancies. Newest first. Source first.
-          Every deadline is checked against today in London, and every role keeps its
-          original agency link.
-        </p>
-      </div>
-
-      <div class="ledger-panel">
-        <span class="tape tape--ledger-one" aria-hidden="true"></span>
-        <span class="tape tape--ledger-two" aria-hidden="true"></span>
-        <dl class="ledger-grid">
-          <div class="ledger-item">
-            <dt>Vacancies on record</dt>
-            <dd class="ledger-number"><%= stats.total %><sup>unique</sup></dd>
-            <p>One row per role, across every edition indexed.</p>
-          </div>
-          <div class="ledger-item">
-            <dt>Open right now</dt>
-            <dd class="ledger-number"><%= stats.open %><sup>live</sup></dd>
-            <p><%= stats.closing %> closing within the next seven days.</p>
-          </div>
-          <div class="ledger-item">
-            <dt>Editions merged</dt>
-            <dd class="ledger-number"><%= stats.editions %><sup>weekly</sup></dd>
-            <p>Repeated roles update one record instead of multiplying.</p>
-          </div>
-          <div class="ledger-item ledger-item--date">
-            <dt>Register last checked</dt>
-            <% const [lastMonth, lastYear] = lastCheckMonth.split(' '); %>
-            <dd class="ledger-date"><span><%= lastCheckDay %></span><span><%= lastMonth %><br><%= lastYear %></span></dd>
-            <p class="ledger-live"><i class="live-dot" aria-hidden="true"></i><%= lastSuccess ? 'Source current at last sweep.' : 'Waiting for the first sweep.' %></p>
-          </div>
-        </dl>
-        <p class="ledger-foot"><span>No invented listings.</span> Every row links to the agency vacancy page and the source edition it came from.</p>
       </div>
     </section>
 
     <section class="ways wrap" id="categories" aria-labelledby="ways-title">
       <div class="ways__head">
         <div>
-          <p class="section-index"><span>02</span> Open a file</p>
+          <p class="section-index"><span>01</span> Open a file</p>
           <h2 class="section-title" id="ways-title">Four ways to<br>scan the <span class="marker">register.</span></h2>
         </div>
         <div class="ways__aside">
@@ -294,7 +250,7 @@
     <section class="register wrap" id="ledger" aria-labelledby="ledger-title">
       <div class="register__head">
         <div>
-          <p class="section-index"><span>03</span> The ledger</p>
+          <p class="section-index"><span>02</span> The ledger</p>
           <h2 class="section-title" id="ledger-title">Every vacancy,<br><span class="marker">one record.</span></h2>
         </div>
         <div class="register__aside">
@@ -450,7 +406,7 @@
       <div class="latest__inner wrap">
         <div class="latest__head">
           <div>
-            <p class="section-index section-index--light"><span>04</span> The docket</p>
+            <p class="section-index section-index--light"><span>03</span> The docket</p>
             <h2 class="section-title section-title--light" id="latest-title">Latest from<br>the <span class="marker marker--pink">register.</span></h2>
           </div>
           <div class="latest__aside">
@@ -500,7 +456,7 @@
     <section class="fineprint wrap" id="method" aria-labelledby="fineprint-title">
       <div class="fineprint__head">
         <div>
-          <p class="section-index"><span>05</span> Method / limits</p>
+          <p class="section-index"><span>04</span> Method / limits</p>
           <h2 class="section-title" id="fineprint-title">Read the <span class="marker">fine print.</span></h2>
         </div>
         <p class="fineprint__intro">
@@ -549,7 +505,7 @@
     <section class="cta" id="source" aria-labelledby="cta-title">
       <div class="cta__grain" aria-hidden="true"></div>
       <div class="cta__inner wrap">
-        <p class="section-index section-index--light"><span>06</span> The point</p>
+        <p class="section-index section-index--light"><span>05</span> The point</p>
         <div class="cta__stage">
           <h2 class="cta__title" id="cta-title">
             <span>Don't chase</span>
@@ -590,7 +546,6 @@
         </div>
         <div class="colophon__col">
           <h2>Register</h2>
-          <a href="#overview">Overview</a>
           <a href="#categories">Categories</a>
           <a href="#ledger">All vacancies</a>
           <a href="#latest">Latest files</a>
