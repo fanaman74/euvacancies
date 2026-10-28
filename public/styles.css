@@ -401,12 +401,21 @@ h3 { text-wrap: balance; }
   margin-right: .3rem;
   background: rgba(23, 20, 18, .35);
 }
-.hero__meta a {
-  margin-left: auto;
-  color: var(--pink-deep);
-  text-decoration: none;
+.hero__source-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: .55rem;
 }
-.hero__meta a:hover { color: var(--ink); }
+.hero__source-row a {
+  color: var(--pink-deep);
+  font-family: var(--mono);
+  font-size: 8px;
+  line-height: 1.4;
+  letter-spacing: .09em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.hero__source-row a:hover { color: var(--ink); }
 .file-tag {
   padding: .42em .55em .35em;
   color: var(--paper);
@@ -566,6 +575,7 @@ h3 { text-wrap: balance; }
 .hero__file-wrap {
   position: relative;
   align-self: start;
+  margin-top: -2.4rem;
   padding-top: .4rem;
   padding-bottom: 2rem;
 }
@@ -2036,7 +2046,6 @@ h3 { text-wrap: balance; }
   .hero { padding-top: 2rem; }
   .hero__meta { font-size: 6.5px; gap: .5rem .9rem; }
   .hero__meta > * + *::before { width: 10px; }
-  .hero__meta a { margin-left: 0; }
   .hero__title { font-size: clamp(2.7rem, 11.8vw, 5.2rem); line-height: .9; }
   .hero__title .marker { filter: drop-shadow(4px 4px 0 var(--ink)); }
   .hero__intro { font-size: 1rem; }
