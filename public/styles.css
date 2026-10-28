@@ -401,10 +401,16 @@ h3 { text-wrap: balance; }
   margin-right: .3rem;
   background: rgba(23, 20, 18, .35);
 }
+.hero__record {
+  position: relative;
+  z-index: 2;
+}
 .hero__source-row {
+  position: absolute;
+  top: calc(100% + .3rem);
+  right: 0;
   display: flex;
   justify-content: flex-end;
-  margin-top: .55rem;
 }
 .hero__source-row a {
   color: var(--pink-deep);
