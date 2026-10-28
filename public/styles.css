@@ -2181,7 +2181,21 @@ h3 { text-wrap: balance; }
   .main-nav { display: none; }
   .hero { padding-top: 2.6rem; }
   .hero__title { font-size: clamp(3rem, 9.4vw, 6.4rem); }
-  .hero__grid { grid-template-columns: 1fr; gap: 2.8rem; }
+  .hero__line--mark {
+    display: inline;
+    width: auto;
+    max-width: 100%;
+    padding: 0 .06em;
+    white-space: normal;
+    background: var(--pink);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    clip-path: none;
+    filter: drop-shadow(4px 4px 0 var(--ink));
+    transform: none;
+    line-height: 1;
+  }
+  .hero__grid { grid-template-columns: 1fr; gap: 2rem; }
   .hero__copy { max-width: 720px; }
   .hero__file-wrap { max-width: 560px; margin: 0 auto; width: 100%; }
   .map-card { margin-inline: auto; }
