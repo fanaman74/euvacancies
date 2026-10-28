@@ -4,7 +4,7 @@ A source-first, deduplicated register of EU institution and agency vacancies, sy
 [euemployment.eu/category/vacancies](https://euemployment.eu/category/vacancies/) every
 morning at **09:00 Europe/London**.
 
-The interface is an evidence-file editorial system — warm paper, near-black ink, hot pink,
+The interface is an evidence-file editorial system — warm paper, near-black ink, neon blue,
 archival rules, case-file typography and direct source links — redesigned in the visual
 language of [eujust.online](https://www.eujust.online/).
 

@@ -6,7 +6,7 @@
 
 An evidence file laid on a warm paper desk. The page behaves like a public register: ruled
 edges, file numbers, taped cards, stamps, source annotations and plain-language method notes.
-The reference is **eujust.online**: paper `#ece6d8`, ink `#171412`, hot pink `#ff2d7a`,
+The reference is **eujust.online**: paper `#ece6d8`, ink `#171412`, neon blue `#00c8ff`,
 hairline rules and a hard-offset archival card system. The design is not a replica of the
 reference's content or layout; it translates that material world to a vacancy register.
 
@@ -18,14 +18,14 @@ reference's content or layout; it translates that material world to a vacancy re
 | `--paper-hi` | `#f8f2e5` | Cards, ledger sheets |
 | `--paper-lo` | `#ddd4c0` | Closed / recessive fills |
 | `--ink` | `#171412` | Type, rules, dark panels |
-| `--pink` | `#ff2d7a` | Marker, active category, signal |
-| `--pink-deep` | `#e00059` | Links, stamps, small text on paper |
+| `--pink` | `#00c8ff` | Marker, active category, signal |
+| `--pink-deep` | `#0057ff` | Links, stamps, small text on paper |
 | `--blue` | `#2146ff` | Contract-agent data accent |
 | `--lime` | `#d7ef55` | Assistant data accent |
 | `--periwinkle` | `#b9c6ff` | Administrator data accent |
 | `--mint` | `#b9efd2` | Open status |
 
-Colour strategy: committed paper/ink field with one hot-pink signal. Category accents are
+Colour strategy: committed paper/ink field with one neon-blue signal. Category accents are
 limited to data marks, tags and small bars so the archival world stays coherent.
 
 ## Type
@@ -51,15 +51,15 @@ limited to data marks, tags and small bars so the archival world stays coherent.
 
 - **Ledger sheet** — paper-hi, 2px ink border, hard ink shadow, tape corners, inset hairline.
 - **Map layer** — right-anchored Mercator Europe map with muted country fills, a paper wash behind
-  the copy, hot-pink pulsing country dots, hover/focus tooltips, and country filtering on click.
-- **Dossier / case card** — paper-hi or pink, 2px ink border, offset pink/ink shadow, tape,
+  the copy, neon-blue pulsing country dots, hover/focus tooltips, and country filtering on click.
+- **Dossier / case card** — paper-hi or blue, 2px ink border, offset blue/ink shadow, tape,
   mono top line, ruled separation, ghost numeral.
 - **Category door** — 2×2 button cards, 330px min height, icon disc, outlined numeral,
-  ghost abbreviation; active state is hot pink.
+  ghost abbreviation; active state is neon blue.
 - **Filter bar** — paper sheet with search, square-tab filters and mono selects.
 - **Table** — compact archival ledger; ink header, dashed row rules, data chips, direct apply.
-- **Pagination** — ten rows per page, numbered paper tabs with a hot-pink active tab and mono arrows.
-- **Chips** — rectangular, 1px ink border, uppercase mono; category fills contract pink,
+- **Pagination** — ten rows per page, numbered paper tabs with a neon-blue active tab and mono arrows.
+- **Chips** — rectangular, 1px ink border, uppercase mono; category fills contract blue,
   assistant lime, administrator periwinkle; status fills are semantic.
 - **Seal** — circular SVG text path, used once in the close; no repeated badge clutter.
 

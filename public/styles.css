@@ -1,6 +1,6 @@
 /* ============================================================
    EU EMPLOYMENT — the vacancy register
-   Paper, ink, hot pink, and a source-first case file.
+   Paper, ink, neon blue, and a source-first case file.
    ============================================================ */
 
 :root {
@@ -9,8 +9,8 @@
   --paper-lo: #ddd4c0;
   --ink: #171412;
   --ink-2: #211d19;
-  --pink: #ff2d7a;
-  --pink-deep: #e00059;
+  --pink: #00c8ff;
+  --pink-deep: #0057ff;
   --muted: #635b4f;
   --muted-light: #a39a8b;
   --cream: #f4efe3;
@@ -298,7 +298,7 @@ h3 { text-wrap: balance; }
   flex: none;
   background: var(--pink);
   border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(255, 45, 122, .14);
+  box-shadow: 0 0 0 3px rgba(0, 200, 255, .14);
   animation: live-pulse 2.8s ease-in-out infinite;
 }
 .search-jump {
@@ -378,7 +378,7 @@ h3 { text-wrap: balance; }
   transition: fill .25s ease, stroke .25s ease;
 }
 .map-country.has-roles {
-  fill: rgba(255, 45, 122, .13);
+  fill: rgba(0, 200, 255, .13);
   stroke: rgba(23, 20, 18, .58);
 }
 .map-dots {
@@ -422,7 +422,7 @@ h3 { text-wrap: balance; }
   background: var(--pink);
   border: 1.3px solid var(--ink);
   border-radius: 50%;
-  box-shadow: 0 0 0 4px rgba(255, 45, 122, .14);
+  box-shadow: 0 0 0 4px rgba(0, 200, 255, .14);
   transition: transform .2s var(--ease), background .2s ease, box-shadow .2s ease;
 }
 .map-dot:hover .map-dot__dot,
@@ -587,12 +587,16 @@ h3 { text-wrap: balance; }
   white-space: nowrap;
 }
 .hero__mark-wrap {
+  position: relative;
+  z-index: 2;
   display: block;
   width: fit-content;
   max-width: 100%;
   margin-top: .2em;
 }
 .hero__line--mark {
+  position: relative;
+  z-index: 1;
   display: inline;
   width: auto;
   max-width: 100%;
@@ -603,7 +607,7 @@ h3 { text-wrap: balance; }
   box-decoration-break: clone;
   filter: drop-shadow(5px 5px 0 var(--ink));
   transform: none;
-  line-height: 1.3;
+  line-height: 1.36;
 }
 .hero__intro {
   max-width: 520px;
@@ -1131,7 +1135,7 @@ h3 { text-wrap: balance; }
   transition: color .2s ease, background .2s ease;
 }
 .filter-pill span { color: var(--muted); font-size: 6.5px; }
-.filter-pill:hover { background: rgba(255, 45, 122, .1); }
+.filter-pill:hover { background: rgba(0, 200, 255, .1); }
 .filter-pill.is-active { color: var(--paper); background: var(--ink); }
 .filter-pill.is-active span { color: var(--pink); }
 .filter-selects {
@@ -2210,4 +2214,5 @@ h3 { text-wrap: balance; }
   .colophon__col:nth-child(4) { grid-column: 1 / -1; }
   .colophon__word { font-size: 9.6vw; }
 }
+
 
