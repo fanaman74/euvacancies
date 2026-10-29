@@ -43,7 +43,7 @@ limited to data marks, tags and small bars so the archival world stays coherent.
 - Sticky masthead, black ticker rail, 84px desktop / 68px mobile.
 - Section rhythm: generous paper pauses between border-ruled field sections.
 - Hero: large interactive map of Europe anchored right, with the display thesis and copy on the left.
-- Register: a full-width ledger sheet first, followed by the category doors in a 2×2 matrix.
+- Register: a full-width ledger sheet followed by the latest-files docket.
 - Docket: near-black field with three tilted case cards.
 - Close: near-black CTA with a monumental statement and a circular source seal.
 
@@ -54,8 +54,6 @@ limited to data marks, tags and small bars so the archival world stays coherent.
   the copy, neon-blue pulsing country dots, hover/focus tooltips, and country filtering on click.
 - **Dossier / case card** — paper-hi or blue, 2px ink border, offset blue/ink shadow, tape,
   mono top line, ruled separation, ghost numeral.
-- **Category door** — 2×2 button cards, 330px min height, icon disc, outlined numeral,
-  ghost abbreviation; active state is neon blue.
 - **Filter bar** — paper sheet with search, square-tab filters and mono selects.
 - **Table** — compact archival ledger; ink header, dashed row rules, data chips, direct apply.
 - **Pagination** — ten rows per page, numbered paper tabs with a neon-blue active tab and mono arrows.
@@ -66,12 +64,12 @@ limited to data marks, tags and small bars so the archival world stays coherent.
 ## Motion
 
 One authored entrance: hero meta, title and body rise in sequence with a `0.8s` exponential
-ease-out. Card and category hovers lift and de-rotate. The CTA seal rotates slowly. All motion
+ease-out. Card hovers lift and de-rotate. The CTA seal rotates slowly. All motion
 is disabled under `prefers-reduced-motion`.
 
 ## Responsive
 
 - 1180px: masthead compresses, hero type scales, table columns tighten.
-- 980px: hero map softens behind the copy; category and section heads stack.
+- 980px: hero map softens behind the copy; section heads stack.
 - 820px: table rows become case cards; filters stack; footer becomes two columns.
 - 480px: hero type tightens, category filters lose counts, footer compacts.

@@ -221,14 +221,6 @@ async function loadSiteData() {
     administrator: jobs.filter((job) => job.category === 'Administrators').length,
   };
 
-  const latestCategoryCounts = latestEdition
-    ? {
-      contract: jobs.filter((job) => job.source_post_id === latestEdition.source_post_id && job.category === 'Contract Agents').length,
-      assistant: jobs.filter((job) => job.source_post_id === latestEdition.source_post_id && job.category === 'Assistants').length,
-      administrator: jobs.filter((job) => job.source_post_id === latestEdition.source_post_id && job.category === 'Administrators').length,
-    }
-    : { contract: 0, assistant: 0, administrator: 0 };
-
   const locations = [...new Map(
     jobs
       .filter((job) => job.location_country)
@@ -304,12 +296,6 @@ async function loadSiteData() {
     .sort((a, b) => b.total - a.total || a.country.localeCompare(b.country));
 
   const mapCountryCodes = new Set(mapPoints.map((point) => point.code));
-  const categoryOpenCounts = {
-    all: liveJobs.length,
-    contract: liveJobs.filter((job) => job.category === 'Contract Agents').length,
-    assistant: liveJobs.filter((job) => job.category === 'Assistants').length,
-    administrator: liveJobs.filter((job) => job.category === 'Administrators').length,
-  };
   const latestId = latestEdition ? String(latestEdition.source_post_id) : '';
   const featuredJobs = liveJobs
     .filter((job) => latestId && String(job.source_post_id) === latestId)
@@ -339,8 +325,6 @@ async function loadSiteData() {
     lastSuccess,
     schedule,
     categoryCounts,
-    categoryOpenCounts,
-    latestCategoryCounts,
     locations,
     europeMap,
     mapPoints,

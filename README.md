@@ -24,8 +24,8 @@ language of [eujust.online](https://www.eujust.online/).
 - Serves a responsive, filterable vacancy register and JSON API. All roles are paginated
   10 per page; closed roles stay in the ledger for reference and are shown with a closed status.
 - Presents an interactive vacancy map of Europe in the hero; each country dot filters the
-  register. Also includes the paginated ledger, category doors, latest-files docket and a
-  plain-language method note. The visual world is documented in [DESIGN.md](DESIGN.md).
+  register. Also includes the paginated ledger, latest-files docket and a plain-language
+  method note. The visual world is documented in [DESIGN.md](DESIGN.md).
 
 ## Stack
 

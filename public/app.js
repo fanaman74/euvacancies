@@ -52,6 +52,14 @@
   const requestedPage = Number.parseInt(params.get('page'), 10);
   if (Number.isInteger(requestedPage) && requestedPage > 0) state.page = requestedPage;
 
+  let mapFilterActive = state.location !== defaults.location;
+
+  function clearMapFilter() {
+    if (!mapFilterActive) return;
+    state.location = defaults.location;
+    mapFilterActive = false;
+  }
+
   function normalise(value) {
     return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
   }
@@ -259,6 +267,7 @@
   searchInput?.addEventListener('input', () => {
     window.clearTimeout(searchTimer);
     searchTimer = window.setTimeout(() => {
+      clearMapFilter();
       state.query = searchInput.value;
       applyFilters({ resetPage: true });
     }, 90);
@@ -266,10 +275,12 @@
 
   locationFilter?.addEventListener('change', () => {
     state.location = locationFilter.value;
+    mapFilterActive = false;
     applyFilters({ resetPage: true });
   });
 
   statusFilter?.addEventListener('change', () => {
+    clearMapFilter();
     state.status = statusFilter.value;
     applyFilters({ resetPage: true });
   });
@@ -281,17 +292,16 @@
 
   categoryControls.forEach((control) => {
     control.addEventListener('click', () => {
+      clearMapFilter();
       state.category = control.dataset.categoryFilter;
       applyFilters({ resetPage: true });
-      if (control.classList.contains('category-door')) {
-        document.getElementById('ledger')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
     });
   });
 
   mapDots.forEach((dot) => {
     dot.addEventListener('click', () => {
       state.location = dot.dataset.mapCountry;
+      mapFilterActive = true;
       applyFilters({ resetPage: true });
       document.getElementById('ledger')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -320,6 +330,7 @@
 
   function resetFilters() {
     Object.assign(state, defaults);
+    mapFilterActive = false;
     applyFilters();
     searchInput?.focus({ preventScroll: true });
   }
@@ -343,6 +354,7 @@
     if (event.key === 'Escape' && target === searchInput) {
       searchInput.value = '';
       state.query = '';
+      clearMapFilter();
       applyFilters({ resetPage: true });
       searchInput.blur();
     }
