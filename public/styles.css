@@ -602,12 +602,16 @@ h3 { text-wrap: balance; }
   max-width: 100%;
   padding: 0 .06em;
   white-space: normal;
-  background: var(--pink);
+  background-color: transparent;
+  background-image: linear-gradient(var(--pink), var(--pink));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   filter: drop-shadow(5px 5px 0 var(--ink));
   transform: none;
   line-height: 1.36;
+  animation: marker-fill .9s cubic-bezier(.2, .8, .2, 1) .25s both;
 }
 .hero__intro {
   max-width: 520px;
@@ -759,6 +763,10 @@ h3 { text-wrap: balance; }
 @keyframes map-pulse {
   0% { opacity: .7; transform: scale(.55); }
   70%, 100% { opacity: 0; transform: scale(1.45); }
+}
+@keyframes marker-fill {
+  from { background-size: 0% 100%; }
+  to { background-size: 100% 100%; }
 }
 
 .cta__seal text {
@@ -933,19 +941,41 @@ h3 { text-wrap: balance; }
   font-size: 9px;
 }
 .clear-filters {
+  display: inline-flex;
+  align-items: center;
   flex: none;
-  padding: .2rem 0;
-  color: var(--muted);
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid rgba(23, 20, 18, .4);
+  gap: .42rem;
+  padding: .62em .72em .56em;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
   font-family: var(--mono);
-  font-size: 7px;
+  font-size: 7.5px;
   letter-spacing: .06em;
+  line-height: 1;
   text-transform: uppercase;
   cursor: pointer;
+  transition: color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
 }
-.clear-filters:hover { color: var(--pink-deep); border-color: var(--pink-deep); }
+.clear-filters span {
+  color: var(--pink-deep);
+  font-size: 14px;
+  line-height: .8;
+}
+.clear-filters:hover,
+.clear-filters:focus-visible {
+  color: var(--paper);
+  background: var(--ink);
+  box-shadow: 5px 5px 0 var(--pink);
+  transform: translate(-1px, -1px);
+}
+.clear-filters:hover span,
+.clear-filters:focus-visible span { color: var(--pink); }
+.clear-filters:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--pink);
+}
 .filter-row {
   display: flex;
   align-items: center;
@@ -1883,6 +1913,10 @@ h3 { text-wrap: balance; }
   .hero__meta,
   .hero__title,
   .hero__content { opacity: 1; transform: none; }
+  .hero__line--mark {
+    animation: none;
+    background-size: 100% 100%;
+  }
   .cta__seal svg { animation: none; }
 }
 
