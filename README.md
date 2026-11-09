@@ -166,3 +166,7 @@ Wait for the newest deployment to reach `SUCCESS`, then verify `/healthz` and `/
   Vacancy data and application links belong to their respective sources.
 
 # euvacancies
+
+## LinkedIn search
+
+The separate `/linkedin/` page adapts [LinkedinLive](https://github.com/fanaman74/LinkedinLive). It builds LinkedIn search links, stores watchlists in the browser, and can request public guest results through `/api/linkedin/search`. LinkedIn controls result availability and may block or change its guest endpoint; the direct LinkedIn search link remains available when the in-page feed fails. Automatic refresh runs only while the page is open and enabled.

@@ -9,6 +9,7 @@ const { initDb, query, getPool } = require('./src/db');
 const { runSync, getLastSync } = require('./src/sync');
 const { startScheduler, getScheduleInfo, TIMEZONE } = require('./src/scheduler');
 const europeMap = require('./src/europe-map.json');
+const { linkedinSearch } = require('./src/linkedin-search');
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -348,6 +349,8 @@ app.get('/', async (req, res, next) => {
     next(error);
   }
 });
+
+app.get('/api/linkedin/search', linkedinSearch);
 
 app.get('/healthz', async (req, res) => {
   try {
