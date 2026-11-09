@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= pageTitle %></title>
   <meta name="description" content="<%= pageDescription %>">
-  <meta name="theme-color" content="#08080a">
+  <meta name="theme-color" content="#ece6d8">
   <meta property="og:title" content="<%= pageTitle %>">
   <meta property="og:description" content="<%= pageDescription %>">
   <meta property="og:type" content="website">
@@ -13,9 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/reference-fonts.css">
   <link rel="stylesheet" href="/styles.css">
-  <link rel="stylesheet" href="/reference-theme.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -23,6 +21,23 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="page-edge page-edge--left" aria-hidden="true"></div>
   <div class="page-edge page-edge--right" aria-hidden="true"></div>
+
+  <div class="ticker" role="status" aria-label="Register summary">
+    <div class="ticker__track">
+      <span><b><%= stats.total %></b> vacancies on record</span>
+      <i aria-hidden="true">✳</i>
+      <span><b><%= stats.open %></b> open now</span>
+      <i aria-hidden="true">✳</i>
+      <span><b><%= stats.editions %></b> editions merged</span>
+      <i aria-hidden="true">✳</i>
+      <span>Source: euemployment.eu</span>
+      <i aria-hidden="true">✳</i>
+      <span>Checked <b><%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'on first boot' %></b></span>
+      <i aria-hidden="true">✳</i>
+      <span>Independent reading aid — not legal or recruitment advice</span>
+      <i aria-hidden="true">✳</i>
+    </div>
+  </div>
 
   <header class="masthead">
     <div class="masthead__inner">
@@ -141,24 +156,6 @@
         </div>
       </div>
     </section>
-
-  <div class="ticker" role="status" aria-label="Register summary">
-    <div class="ticker__track">
-      <span><b><%= stats.total %></b> vacancies on record</span>
-      <i aria-hidden="true">✳</i>
-      <span><b><%= stats.open %></b> open now</span>
-      <i aria-hidden="true">✳</i>
-      <span><b><%= stats.editions %></b> editions merged</span>
-      <i aria-hidden="true">✳</i>
-      <span>Source: euemployment.eu</span>
-      <i aria-hidden="true">✳</i>
-      <span>Checked <b><%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'on first boot' %></b></span>
-      <i aria-hidden="true">✳</i>
-      <span>Independent reading aid — not legal or recruitment advice</span>
-      <i aria-hidden="true">✳</i>
-    </div>
-  </div>
-
 
     <section class="register wrap" id="ledger" aria-labelledby="ledger-title">
       <div class="register__head">
