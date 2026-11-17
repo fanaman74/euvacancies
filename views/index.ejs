@@ -5,15 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= pageTitle %></title>
   <meta name="description" content="<%= pageDescription %>">
-  <meta name="theme-color" content="#ece6d8">
+  <meta name="theme-color" content="#e0e5ec">
   <meta property="og:title" content="<%= pageTitle %>">
   <meta property="og:description" content="<%= pageDescription %>">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="EU Employment / The Vacancy Register">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/soft-ui.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -53,6 +54,10 @@
         <a href="/linkedin/">LinkedIn search</a>
       </nav>
 
+      <details class="mobile-nav">
+        <summary aria-label="Open navigation">Menu <span aria-hidden="true">☰</span></summary>
+        <nav aria-label="Mobile sections"><a href="#ledger">Register</a><a href="#latest">Latest vacancies</a><a href="#method">How it works</a><a href="/linkedin/">LinkedIn search</a></nav>
+      </details>
       <div class="masthead__tools">
         <a class="linkedin-mobile-link" href="/linkedin/">LinkedIn search ↗</a>
         <span class="feed-status"><i class="live-dot" aria-hidden="true"></i>Checked <b><%= lastCheckDay %> <%= lastCheckMonth %></b></span>

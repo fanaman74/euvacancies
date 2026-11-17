@@ -360,6 +360,17 @@
     }
   });
 
+  const mobileNav = document.querySelector('.mobile-nav');
+  mobileNav?.querySelectorAll('nav a').forEach((link) => {
+    link.addEventListener('click', () => { mobileNav.open = false; });
+  });
+  mobileNav?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && mobileNav.open) {
+      mobileNav.open = false;
+      mobileNav.querySelector('summary')?.focus();
+    }
+  });
+
   applyFilters();
   layoutMapDots();
 

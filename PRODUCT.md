@@ -32,7 +32,7 @@ The source publishes weekly roundups. The app checks them every morning at 09:00
 
 ## Brand Commitments
 
-The redesign is explicitly pinned to the visual language of eujust.online: warm paper, near-black ink, neon blue, hard rules, archival case-file typography and evidence-first language. Preserve the independent, source-first position.
+The interface uses the requested cool grey soft UI, violet accents, tactile shadows and rounded controls. Preserve the independent, source-first position and keep vacancy information easy to scan.
 
 ## Evidence on Hand
 
