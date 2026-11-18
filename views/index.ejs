@@ -53,6 +53,11 @@
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__dot-wave" aria-hidden="true">
+        <% for (let row = 0; row < 36; row++) { %>
+          <i style="--row: <%= row %>"></i>
+        <% } %>
+      </div>
       <div class="hero__visual">
         <div class="hero__visual-bar" aria-hidden="true"><i></i><i></i><i></i><span>THE VACANCY REGISTER / EUROPE</span></div>
         <div class="hero__visual-heading"><div><strong>Explore the map.</strong><span>Find opportunities by country</span></div><span class="hero__visual-badge">LIVE REGISTER</span></div>
@@ -151,20 +156,24 @@
       </div>
     </section>
 
-  <div class="ticker" role="status" aria-label="Register summary">
+  <div class="ticker" tabindex="0" role="status" aria-label="Register summary">
     <div class="ticker__track">
-      <span><b><%= stats.total %></b> vacancies on record</span>
-      <i aria-hidden="true">✳</i>
-      <span><b><%= stats.open %></b> open now</span>
-      <i aria-hidden="true">✳</i>
-      <span><b><%= stats.editions %></b> editions merged</span>
-      <i aria-hidden="true">✳</i>
-      <span>Source: euemployment.eu</span>
-      <i aria-hidden="true">✳</i>
-      <span>Checked <b><%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'on first boot' %></b></span>
-      <i aria-hidden="true">✳</i>
-      <span>Independent reading aid — not legal or recruitment advice</span>
-      <i aria-hidden="true">✳</i>
+      <% for (const copy of [false, true]) { %>
+        <div class="ticker__group"<% if (copy) { %> aria-hidden="true"<% } %>>
+          <span><b><%= stats.total %></b> vacancies on record</span>
+          <i aria-hidden="true">✳</i>
+          <span><b><%= stats.open %></b> open now</span>
+          <i aria-hidden="true">✳</i>
+          <span><b><%= stats.editions %></b> editions merged</span>
+          <i aria-hidden="true">✳</i>
+          <span>Source: euemployment.eu</span>
+          <i aria-hidden="true">✳</i>
+          <span>Checked <b><%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'on first boot' %></b></span>
+          <i aria-hidden="true">✳</i>
+          <span>Independent reading aid — not legal or recruitment advice</span>
+          <i aria-hidden="true">✳</i>
+        </div>
+      <% } %>
     </div>
   </div>
 
@@ -227,7 +236,7 @@
               <span class="sr-only">Sort roles</span>
               <select id="sort-filter">
                 <option value="deadline">Closing first</option>
-                <option value="newest">Newest edition</option>
+                <option value="newest" selected>Open first · newest edition</option>
                 <option value="title">Role A–Z</option>
                 <option value="salary">Salary, high to low</option>
               </select>

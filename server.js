@@ -143,12 +143,7 @@ async function loadSiteData() {
               deadline_date, deadline_text, indefinite_contract, apply_url, source_post_id,
               source_post_title, source_post_url, source_published_at, first_seen_at, last_seen_at, times_seen
        FROM jobs
-       ORDER BY CASE
-                  WHEN deadline_date IS NULL THEN 1
-                  WHEN deadline_date >= $1::date THEN 0
-                  ELSE 1
-                END,
-                deadline_date ASC NULLS LAST,
+       ORDER BY (deadline_date IS NOT NULL AND deadline_date < $1::date),
                 source_published_at DESC NULLS LAST,
                 title ASC`,
       [today],

@@ -31,7 +31,7 @@
     category: 'all',
     location: 'all',
     status: 'all',
-    sort: 'deadline',
+    sort: 'newest',
     query: '',
     page: 1,
   };
@@ -86,6 +86,8 @@
   function sortedRows() {
     return [...rows].sort((a, b) => {
       if (state.sort === 'newest') {
+        const statusOrder = Number(a.dataset.status === 'closed') - Number(b.dataset.status === 'closed');
+        if (statusOrder) return statusOrder;
         return (b.dataset.published || '').localeCompare(a.dataset.published || '');
       }
       if (state.sort === 'title') {

@@ -29,3 +29,60 @@ html,body {background:#ffe17c;color:#171e19} body {font-family:var(--body);backg
 .brand--footer {justify-content:flex-start;align-items:flex-start}
 @media (max-width:820px) {.fineprint__warning-stamp {display:none}.fineprint__warning {padding:18px}.fineprint__warning p {max-width:none}}
 .status-page {background:#ffe17c}.status-card {background:#fff;border:2px solid #171e19;border-radius:14px;box-shadow:10px 10px 0 #171e19}.status-card h1 {font-weight:800;line-height:.95;letter-spacing:-.04em}.status-card h1 em {color:#171e19;font-style:normal}.status-card > p:not(.section-index) {color:#42524a}
+
+.status--open, .status--soon, .status--today, .status--rolling {
+  background: #c4ebcb;
+  color: #124421;
+}
+.status--closed {
+  background: #ffd3d3;
+  color: #861b1b;
+}
+
+.ticker__track {
+  min-width: 0;
+  padding: 0;
+  animation: register-ticker 40s linear infinite;
+}
+.ticker__group {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 100vw;
+  padding-inline: var(--gutter);
+}
+.ticker:hover .ticker__track,
+.ticker:focus-within .ticker__track {
+  animation-play-state: paused;
+}
+@keyframes register-ticker {
+  to { transform: translateX(-50%); }
+}
+
+.hero { background-image: none; }
+.hero__dot-wave {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero__dot-wave i {
+  display: block;
+  width: calc(100% + 32px);
+  height: 32px;
+  margin-left: -16px;
+  background: radial-gradient(rgba(23, 30, 25, .18) 1px, transparent 1.5px) 0 0 / 32px 32px;
+  animation: hero-dot-wave 5s ease-in-out infinite;
+  animation-delay: calc(var(--row) * -140ms);
+}
+@keyframes hero-dot-wave {
+  0%, 100% { transform: translateX(-9px); opacity: .45; }
+  50% { transform: translateX(9px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__dot-wave i, .ticker__track { animation: none !important; }
+  .ticker__group[aria-hidden="true"] { display: none; }
+  .ticker { overflow-x: auto; }
+}
+.ticker:focus-visible { outline: 2px solid #ffe17c; outline-offset: -4px; }
