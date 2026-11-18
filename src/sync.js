@@ -2,7 +2,7 @@
 
 const { load } = require('cheerio');
 const { getPool, query } = require('./db');
-const { parsePost, cleanText } = require('./parser');
+const { parsePost, cleanText, isRoundupTitle, postTitleText } = require('./parser');
 
 const CATEGORY_URL = process.env.EU_CATEGORY_URL || 'https://euemployment.eu/category/vacancies/';
 const CATEGORY_ID = process.env.EU_CATEGORY_ID || '749';
@@ -275,10 +275,13 @@ async function runSync({ trigger = 'manual' } = {}) {
 
       for (const post of posts) {
         const jobs = parsePost(post);
+        if (!jobs.length && isRoundupTitle(post.title?.rendered || post.title || '')) {
+          console.warn(`[sync] could not extract individual vacancies from roundup ${post.id}; skipping it`);
+        }
         postSummaries.push({
           id: post.id,
           date: post.date,
-          title: cleanText(post.title?.rendered || post.title || ''),
+          title: postTitleText(post.title?.rendered || post.title || ''),
           jobs: jobs.length,
         });
         for (const job of jobs) parsed.push(job);

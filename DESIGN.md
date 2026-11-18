@@ -1,5 +1,5 @@
-# Design — EU Employment
+# EU Employment — visual system
 
-The vacancy register and LinkedIn search use a cool grey soft UI: `#e0e5ec` surfaces, dark blue-grey type, violet actions, teal status, and opposing translucent shadows. Raised cards and controls use light from the upper left; inputs, the map and selected filters use inset shadows. Large panels use 32px corners and controls use 16px corners. Plus Jakarta Sans is the display face and DM Sans is used for body and controls.
+The register and LinkedIn search use a neo-brutalist visual system: yellow `#ffe17c`, charcoal `#171e19`, sage `#b7c6c2`, white backgrounds for data surfaces, 2px dark borders and hard offset shadows. Headings use Cabinet Grotesk; body and controls use Satoshi with sans-serif fallbacks. Buttons press into their shadows on hover. The hero uses a restrained dot pattern and the Europe map sits in a browser-like panel.
 
-Keep search, filters, pagination, country map, direct source links and the separate LinkedIn search functional. Text and focus indicators must remain legible, controls keyboard-accessible, and layout responsive. Motion respects reduced-motion preferences. The main theme lives in `public/soft-ui.css`; the LinkedIn page adapts it in `public/linkedin/css/soft-ui.css`.
+The register must preserve real vacancy data, country filtering, search, category, location and status filters, sorting, pagination and direct source links. Both pages remain keyboard-accessible and responsive, with visible focus and reduced-motion support. Main styles are in `public/neo-ui.css`; LinkedIn styles are in `public/linkedin/css/neo-ui.css`.

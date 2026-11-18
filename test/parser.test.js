@@ -115,3 +115,35 @@ test('fingerprints collapse a job repeated with a fuller duty-station label', ()
   const long = fingerprintFor({ ...base, locationCity: 'Frankfurt am Main' });
   assert.equal(short, long);
 });
+
+test('roundup headings are not treated as a single vacancy', () => {
+  const titles = [
+    '10 NEW EU institutions jobs with &#8216;no epso&#8217; 14/11/26',
+    '09 NEW EU institutions VACANCIES with &#8216;no epso&#8217; 31/10/26',
+    '11 NEW EU institutions jobs with &#8216;no epso&#8217; 07/11/26',
+  ];
+  for (const title of titles) {
+    const post = { id: 42, date: '2026-11-14T12:00:00Z', link: 'https://euemployment.eu/roundup/', title: { rendered: title }, content: { rendered: '<p>Contract agent vacancies in Brussels. Deadline: 27 November 2026.</p>' } };
+    assert.deepEqual(parsePost(post), []);
+  }
+});
+
+test('wrapped WordPress blocks produce separate roles instead of a roundup record', () => {
+  const post = { id: 43, date: '2026-11-14T12:00:00Z', link: 'https://euemployment.eu/roundup/', title: { rendered: '10 NEW EU institutions jobs with &#8216;no epso&#8217; 14/11/26' }, content: { rendered: `
+    <div class="wp-block-group"><div class="wp-block-group__inner-container">
+      <h2>Contract Agents</h2><div class="wp-block-columns"><div class="wp-block-column">
+        <h3>🇧🇪 Policy Officer (Contract Agent FG IV)</h3><p>Agency: European Environment Agency (EEA)</p><p>Location: Brussels</p><p>Deadline: 27 November 2026</p><p><a href="https://example.org/jobs/policy">Apply</a></p>
+      </div><div class="wp-block-column">
+        <h3>🇳🇱 Research Officer (Contract Agent FG III)</h3><p>Agency: European Medicines Agency (EMA)</p><p>Location: Amsterdam</p><p>Deadline: 30 November 2026</p><p><a href="https://example.org/jobs/research">Apply</a></p>
+      </div></div>
+    </div></div>` } };
+  const jobs = parsePost(post);
+  assert.deepEqual(jobs.map((job) => job.title), ['Policy Officer', 'Research Officer']);
+  assert.deepEqual(jobs.map((job) => job.locationCity), ['Brussels', 'Amsterdam']);
+  assert.equal(jobs[0].sourcePostTitle, '10 NEW EU institutions jobs with ‘no epso’ 14/11/26');
+});
+
+test('a single vacancy title decodes entities without becoming a roundup', () => {
+  const post = { id: 44, date: '2026-11-14T12:00:00Z', link: 'https://euemployment.eu/job/', title: { rendered: 'Policy &amp; Research Officer' }, content: { rendered: '<p>Contract agent vacancy in Brussels. Deadline 27 November 2026.</p>' } };
+  assert.equal(parsePost(post)[0].title, 'Policy & Research Officer');
+});

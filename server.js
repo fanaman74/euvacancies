@@ -9,6 +9,7 @@ const { initDb, query, getPool } = require('./src/db');
 const { runSync, getLastSync } = require('./src/sync');
 const { startScheduler, getScheduleInfo, TIMEZONE } = require('./src/scheduler');
 const europeMap = require('./src/europe-map.json');
+const { isRoundupTitle, postTitleText } = require('./src/parser');
 const { linkedinSearch } = require('./src/linkedin-search');
 
 const app = express();
@@ -135,7 +136,7 @@ function safeJson(value) {
 
 async function loadSiteData() {
   const today = todayInLondon();
-  const [jobsResult, statsResult, editionResult, lastSyncResult, lastSuccessResult] = await Promise.all([
+  const [jobsResult, lastSyncResult, lastSuccessResult] = await Promise.all([
     query(
       `SELECT id, fingerprint, title, agency, agency_short, location_city, location_country, country_code,
               flag, contract_type, grade, category, salary_summary, salary_min, salary_max,
@@ -152,24 +153,6 @@ async function loadSiteData() {
                 title ASC`,
       [today],
     ),
-    query(
-      `SELECT COUNT(*)::int AS total,
-              COUNT(*) FILTER (WHERE deadline_date IS NULL OR deadline_date >= $1::date)::int AS open,
-              COUNT(*) FILTER (WHERE deadline_date >= $1::date AND deadline_date <= $1::date + 7)::int AS closing,
-              COUNT(DISTINCT country_code)::int AS countries,
-              COUNT(DISTINCT source_post_id)::int AS editions,
-              COUNT(*) FILTER (WHERE deadline_date < $1::date)::int AS closed
-       FROM jobs`,
-      [today],
-    ),
-    query(
-      `SELECT source_post_id, source_post_title, source_post_url, source_published_at, COUNT(*)::int AS jobs
-       FROM jobs
-       WHERE source_post_id IS NOT NULL
-       GROUP BY source_post_id, source_post_title, source_post_url, source_published_at
-       ORDER BY source_published_at DESC
-       LIMIT 1`,
-    ),
     getLastSync(),
     query(
       `SELECT id, finished_at, duration_ms, posts_scanned, jobs_found, inserted, updated, duplicates_skipped
@@ -178,7 +161,8 @@ async function loadSiteData() {
     ),
   ]);
 
-  const jobs = jobsResult.rows.map((job) => {
+  const jobs = jobsResult.rows.filter((job) => !isRoundupTitle(job.title)).map((storedJob) => {
+    const job = { ...storedJob, title: postTitleText(storedJob.title), source_post_title: postTitleText(storedJob.source_post_title) };
     const status = deadlineStatus(job, today);
     return {
       ...job,
@@ -209,8 +193,22 @@ async function loadSiteData() {
     };
   });
 
-  const stats = statsResult.rows[0];
-  const latestEdition = editionResult.rows[0] || null;
+  const stats = {
+    total: jobs.length,
+    open: jobs.filter((job) => job.status !== 'closed').length,
+    closing: jobs.filter((job) => job.status === 'today' || job.status === 'soon').length,
+    closed: jobs.filter((job) => job.status === 'closed').length,
+    countries: new Set(jobs.map((job) => job.country_code).filter(Boolean)).size,
+    editions: new Set(jobs.map((job) => job.source_post_id).filter((id) => id != null).map(String)).size,
+  };
+  const editions = new Map();
+  for (const job of jobs) {
+    if (job.source_post_id == null) continue;
+    const key = String(job.source_post_id);
+    if (!editions.has(key)) editions.set(key, { source_post_id: job.source_post_id, source_post_title: job.source_post_title, source_post_url: job.source_post_url, source_published_at: job.source_published_at, jobs: 0 });
+    editions.get(key).jobs += 1;
+  }
+  const latestEdition = [...editions.values()].sort((a, b) => new Date(b.source_published_at || 0) - new Date(a.source_published_at || 0))[0] || null;
   const lastSync = lastSyncResult;
   const lastSuccess = lastSuccessResult.rows[0] || null;
   const schedule = getScheduleInfo();

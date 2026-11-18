@@ -32,7 +32,7 @@ The source publishes weekly roundups. The app checks them every morning at 09:00
 
 ## Brand Commitments
 
-The interface uses the requested cool grey soft UI, violet accents, tactile shadows and rounded controls. Preserve the independent, source-first position and keep vacancy information easy to scan.
+The interface uses the approved yellow, charcoal and sage neo-brutalist design, with clear borders and hard shadows. Preserve the independent, source-first position and keep vacancy information easy to scan.
 
 ## Evidence on Hand
 

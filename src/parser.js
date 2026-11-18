@@ -184,6 +184,17 @@ function cleanText(value = '') {
     .trim();
 }
 
+// WordPress titles are rendered HTML; decode entities without treating the result as markup.
+function postTitleText(value = '') {
+  return cleanText(load(String(value), null, false).root().text());
+}
+
+// Roundup headlines describe many vacancies and must never become a job record.
+function isRoundupTitle(value = '') {
+  const title = postTitleText(value);
+  return /^\s*\d+\s+new\s+eu\s+institutions?\b.*\b(?:jobs?|vacanc(?:y|ies))\b/i.test(title);
+}
+
 function stripLeadingEmoji(value = '') {
   return cleanText(value.replace(EMOJI_ONLY, ''));
 }
@@ -643,7 +654,7 @@ function buildJob(rawTitle, options) {
     indefiniteContract: indefinite,
     applyUrl,
     sourcePostId: post.id,
-    sourcePostTitle: cleanText(post.title?.rendered || post.title || ''),
+    sourcePostTitle: postTitleText(post.title?.rendered || post.title || ''),
     sourcePostUrl: post.link,
     sourcePublishedAt: new Date(post.date).toISOString(),
   };
@@ -668,12 +679,13 @@ function isTitleParagraph($element, section) {
 }
 
 function parseSingleVacancy(post) {
+  if (isRoundupTitle(post.title?.rendered || post.title || '')) return null;
   const $ = load(post.content?.rendered || '', null, false);
   const text = cleanText($.root().text());
   if (!/contract agent|temporary agent|assistant|administrator|vacanc/i.test(text)) return null;
   if (!/deadline/i.test(text)) return null;
 
-  const title = cleanTitle(post.title?.rendered || post.title || 'EU vacancy');
+  const title = cleanTitle(postTitleText(post.title?.rendered || post.title || 'EU vacancy'));
   const flagMatch = text.match(REGIONAL_FLAG);
   const flagCode = flagMatch ? flagToCode(flagMatch[0]) : null;
   let agencyRaw = '';
@@ -710,7 +722,7 @@ function parseSingleVacancy(post) {
     indefiniteContract: extractIndefinite(text),
     applyUrl,
     sourcePostId: post.id,
-    sourcePostTitle: cleanText(post.title?.rendered || post.title || ''),
+    sourcePostTitle: postTitleText(post.title?.rendered || post.title || ''),
     sourcePostUrl: post.link,
     sourcePublishedAt: new Date(post.date).toISOString(),
   };
@@ -723,7 +735,20 @@ function parsePost(post) {
   const html = post.content?.rendered || '';
   if (!html) return [];
   const $ = load(html, null, false);
-  const blocks = $.root().children().toArray();
+  // WordPress may wrap blocks in groups or columns. Traverse structural containers
+  // without flattening individual paragraphs, lists, or job metadata.
+  function collectBlocks(parent) {
+    const blocks = [];
+    $(parent).children().each((_, element) => {
+      const tag = (element.tagName || '').toLowerCase();
+      const structural = ['div', 'section', 'article'].includes(tag)
+        && $(element).children('h2, h3, p, div, section, article, ul, ol, blockquote, figure, table').length > 0;
+      if (structural) blocks.push(...collectBlocks(element));
+      else blocks.push(element);
+    });
+    return blocks;
+  }
+  const blocks = collectBlocks($.root());
 
   const isSectionHeading = (text) => /^(contract agents?|assistants?|administrators?|temporary agents?)\b/i.test(text)
     && !text.includes('|');
@@ -803,6 +828,8 @@ function parsePost(post) {
 module.exports = {
   parsePost,
   parseSingleVacancy,
+  isRoundupTitle,
+  postTitleText,
   parseDeadline,
   parseContract,
   parseLocation,

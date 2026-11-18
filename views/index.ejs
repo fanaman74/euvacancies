@@ -5,16 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= pageTitle %></title>
   <meta name="description" content="<%= pageDescription %>">
-  <meta name="theme-color" content="#e0e5ec">
+  <meta name="theme-color" content="#ffe17c">
   <meta property="og:title" content="<%= pageTitle %>">
   <meta property="og:description" content="<%= pageDescription %>">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="EU Employment / The Vacancy Register">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,600,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/soft-ui.css">
+  <link rel="stylesheet" href="/neo-ui.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -22,23 +21,6 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="page-edge page-edge--left" aria-hidden="true"></div>
   <div class="page-edge page-edge--right" aria-hidden="true"></div>
-
-  <div class="ticker" role="status" aria-label="Register summary">
-    <div class="ticker__track">
-      <span><b><%= stats.total %></b> vacancies on record</span>
-      <i aria-hidden="true">✳</i>
-      <span><b><%= stats.open %></b> open now</span>
-      <i aria-hidden="true">✳</i>
-      <span><b><%= stats.editions %></b> editions merged</span>
-      <i aria-hidden="true">✳</i>
-      <span>Source: euemployment.eu</span>
-      <i aria-hidden="true">✳</i>
-      <span>Checked <b><%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'on first boot' %></b></span>
-      <i aria-hidden="true">✳</i>
-      <span>Independent reading aid — not legal or recruitment advice</span>
-      <i aria-hidden="true">✳</i>
-    </div>
-  </div>
 
   <header class="masthead">
     <div class="masthead__inner">
@@ -71,7 +53,10 @@
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero__map-stage">
+      <div class="hero__visual">
+        <div class="hero__visual-bar" aria-hidden="true"><i></i><i></i><i></i><span>THE VACANCY REGISTER / EUROPE</span></div>
+        <div class="hero__visual-heading"><div><strong>Explore the map.</strong><span>Find opportunities by country</span></div><span class="hero__visual-badge">LIVE REGISTER</span></div>
+        <div class="hero__map-stage">
         <svg class="hero__map-svg" viewBox="<%= europeMap.viewBox %>" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="map-title">
           <title id="map-title">Map of Europe showing vacancy locations by country</title>
           <g class="map-countries">
@@ -110,6 +95,8 @@
           <small>Tap a country dot to filter the register</small>
         </div>
 
+        </div>
+        <div class="hero__visual-foot"><span>EU institutions &amp; agencies</span><span>FILTER BY COUNTRY ↗</span></div>
       </div>
 
       <div class="hero__overlay wrap">
@@ -164,6 +151,25 @@
       </div>
     </section>
 
+  <div class="ticker" role="status" aria-label="Register summary">
+    <div class="ticker__track">
+      <span><b><%= stats.total %></b> vacancies on record</span>
+      <i aria-hidden="true">✳</i>
+      <span><b><%= stats.open %></b> open now</span>
+      <i aria-hidden="true">✳</i>
+      <span><b><%= stats.editions %></b> editions merged</span>
+      <i aria-hidden="true">✳</i>
+      <span>Source: euemployment.eu</span>
+      <i aria-hidden="true">✳</i>
+      <span>Checked <b><%= lastSuccess ? formatSyncTime(lastSuccess.finished_at) : 'on first boot' %></b></span>
+      <i aria-hidden="true">✳</i>
+      <span>Independent reading aid — not legal or recruitment advice</span>
+      <i aria-hidden="true">✳</i>
+    </div>
+  </div>
+
+
+    <div class="register-zone">
     <section class="register wrap" id="ledger" aria-labelledby="ledger-title">
       <div class="register__head">
         <div>
@@ -333,6 +339,8 @@
     </section>
 
 
+    </div>
+
     <section class="latest" id="latest" aria-labelledby="latest-title">
       <div class="latest__bgword" aria-hidden="true">OPEN FILES</div>
       <div class="latest__inner wrap">
@@ -342,7 +350,7 @@
             <h2 class="section-title section-title--light" id="latest-title">Latest from<br>the <span class="marker marker--pink">register.</span></h2>
           </div>
           <div class="latest__aside">
-            <p>Three live roles from the most recent register pass. Open the record, check the source, then go straight to the agency.</p>
+            <p>Open the record, check the source, then go straight to the agency.</p>
             <div class="latest__meta">
               <span><%= featuredJobs.length %> latest files</span>
               <a href="#ledger">Browse all <%= stats.open %> open roles <span aria-hidden="true">↗</span></a>
@@ -385,6 +393,7 @@
       </div>
     </section>
 
+    <div class="method-zone">
     <section class="fineprint wrap" id="method" aria-labelledby="fineprint-title">
       <div class="fineprint__head">
         <div>
@@ -434,6 +443,7 @@
       </div>
     </section>
 
+    </div>
     <section class="cta" id="source" aria-labelledby="cta-title">
       <div class="cta__grain" aria-hidden="true"></div>
       <div class="cta__inner wrap">
